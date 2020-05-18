@@ -1,21 +1,60 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 import pyqrcode
+import smbus
+import os
+
 
 
 app = Flask(__name__)
 
-@app.route("/newqr/<qnumber>", methods=["GET"])
-def user_detail(qnumber):
-    printQr(qnumber)
-    return jsonify(response=True)
+queue = list()
+
+# Uncomment when on Raspberry PI
+#bus = smbus.SMBus(1)
+
+DESK_ADDRESS_1 = 0x04
+DESK_ADDRESS_2 = 0x05
+
+@app.route("/iteratequeue", methods=["GET"])
+def iterate():
+    return jsonify({"qnumber":1,"address":0x05})
+
+@app.route("/", methods=["POST"])
+def detail():
+    try:
+        qNumber = request.json["qnumber"]
+        if (int(qNumber) < 1):
+            raise Exception()
+    except:
+        return jsonify({"response": False})
+
+    if (updateQueue(qNumber)):
+        return jsonify({"response": displayQR(qNumber)})
+
+    return jsonify({"response": False})
 
 
-def printQr(qrnum):
-    url = pyqrcode.create(qrnum)
-    print(url.terminal(quiet_zone=1))
+def updateQueue(newQNumber):
+    if (newQNumber not in queue):
+        queue.append(newQNumber)
+        return True
+    return False
+
+
+def displayQR(qrnum):
+    if (int(qrnum) < 1 or qrnum == None):
+        return False
+    try:
+        url = pyqrcode.create(qrnum)
+        print(url.terminal(quiet_zone=1))
+        return True
+    except:
+        return False
 
 
 
 
-if __name__ == '__main__':
-    app.run(debug=False)
+
+app.run(debug=False)
+
+
