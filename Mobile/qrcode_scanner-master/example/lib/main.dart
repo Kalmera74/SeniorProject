@@ -10,71 +10,45 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:http/http.dart' as http;
 import 'package:qrscan_example/occupancy_chart.dart';
 import 'package:qrscan_example/subscriber_series.dart';
+import 'package:qrscan_example/HomePage.dart';
 
-Future<Occupancy> fetchOccuData() async {
-  final response = await http
-      .get('http://127.0.0.1:5000/', headers: {'Accept': 'application/json'});
-  if (response.statusCode == 200) {
+final String geturl = 'http://192.168.1.104:5000/';
+final String getQuePoint = 'http://192.168.1.104:5000/queue/';
+//Get Occupancy Data
+Future getOccuData() async {
+  final res = await http.get(geturl);
+  if (res.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    //Use compute function to run parseOccupancy in a seperate isolate
-    return Occupancy.fromJson(json.decode(response.body));
+    List<SubscriberSeries> listA = [];
+    Map<String, dynamic> user = jsonDecode(res.body.toString());
+    user.forEach((key, value) {
+      listA.add(SubscriberSeries(
+        dayName: key,
+        occupancyRate: value,
+      ));
+    });
+
+    return listA;
   } else {
     // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load Occupancy data');
-  }
-}
-
-class Occupancy {
-  final String dayName;
-  final int occupancyRate;
-
-  Occupancy({
-    @required this.dayName,
-    @required this.occupancyRate,
-  });
-  factory Occupancy.fromJson(Map<String, dynamic> json) => Occupancy(
-        dayName: json['dayName'] as String,
-        occupancyRate: json['occupancyRate'] as int,
-      );
-  Map<String, dynamic> toJson() => {
-        "dayName": dayName,
-        "occupancyRate": occupancyRate,
-      };
-}
-
-//Sending the decrypted QR code to webservice to become authenticated
-Future<QR> sendData(String title) async {
-  final http.Response response = await http.post(
-    'http://127.0.0.1:5000/', //add webservice url here
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'title': title,
-    }),
-  );
-  if (response.statusCode == 201) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    return QR.fromJson(json.decode(response.body));
-  } else {
-    // If the server did not return a 201 CREATED response,
     // then throw an exception.
     throw Exception('Failed to load album');
   }
 }
 
-class QR {
-  final String title;
+Future getQue(String str) async {
+  final res = await http.get(getQuePoint + str);
+  if (res.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
 
-  QR({this.title});
-
-  factory QR.fromJson(Map<String, dynamic> json) {
-    return QR(
-      title: json['title'],
-    );
+    Map<String, dynamic> user = jsonDecode(res.body.toString());
+    if (user['response'] == true) {}
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
   }
 }
 
@@ -85,46 +59,13 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-/*List<Occupancy> modelUserFromJson(String str) =>
-    List<Occupancy>.from(json.decode(str).map((x) => Occupancy.fromJson(x)));
-String modelUserToJson(List<Occupancy> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-*/
-
-class SecondRoute extends StatelessWidget {
-  Future<Occupancy> futureOccu;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Fetch data example"),
-      ),
-      body: Center(
-        child: FutureBuilder<Occupancy>(
-          future: futureOccu,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data.dayName);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-
-            // By default, show a loading spinner.
-            return CircularProgressIndicator();
-          },
-        ),
-      ),
-    );
-  }
-}
-
 class _MyAppState extends State<MyApp> {
   Uint8List bytes = Uint8List(0);
   TextEditingController _outputController;
-  Future<Occupancy> futureOccu;
+  Future futureOccu;
+  List<SubscriberSeries> listB = [];
 
   final TextEditingController _controller = TextEditingController();
-  Future<QR> _futureAlbum;
 
   final List<SubscriberSeries> data = [
     SubscriberSeries(
@@ -160,21 +101,7 @@ class _MyAppState extends State<MyApp> {
   @override
   initState() {
     super.initState();
-    futureOccu = fetchOccuData();
-    this._outputController = new TextEditingController();
-  }
-
-  // A function that converts a response body into a List<Photo>.
-  // List<Occupancy> parseOccupancy(String responseBody) {
-  //   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-  //   print(parsed);
-  //   return parsed.map<Occupancy>((json) => Occupancy.fromJson(json)).toList();
-  // }
-
-  Future fetchQueueData() async {
-    final res = await http
-        .get("http://127.0.0.1:5000/", // add getqueue statistics url here
-            headers: {'Accept': 'application/json'});
+    futureOccu = getOccuData().then((value) => listB = value);
   }
 
   @override
@@ -215,7 +142,7 @@ class _MyAppState extends State<MyApp> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(1),
-              child: OccupancyChart(data: data),
+              child: OccupancyChart(data: listB),
             ),
           ],
         ),
@@ -256,10 +183,8 @@ class _MyAppState extends State<MyApp> {
     if (barcode == null) {
       print('nothing return.');
     } else {
-      setState(() {
-        _futureAlbum = sendData(_outputController.text);
-      });
-      //this._outputController.text = barcode;
+      getQue(barcode).then((value) => null);
+      //call /queue/{code}
     }
   }
 }

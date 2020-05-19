@@ -18,3 +18,11 @@
                 "dayName": "Friday",
                 "occupancyRate": 80
                 },
+		{		
+                "dayName": "Saturday",
+                "occupancyRate": 80
+                },
+		{		
+                "dayName": "Sunday",
+                "occupancyRate": 80
+                },
