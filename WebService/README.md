@@ -2,7 +2,6 @@
 
 Basic Queue API System by using Sqlite3 
 
-
 ## Get Started
 
 ### Requirements
@@ -12,6 +11,14 @@ Basic Queue API System by using Sqlite3
 For checking:
 - [ ] `node -v` 
 - [ ] `npm -v` 
+
+
+### Before launch program, install node modules
+```
+npm install
+```
+
+### Write Kiosk API's url to each json file inside the config folder
 
 ### Set Environment
 Environments:
