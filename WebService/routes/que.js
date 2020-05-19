@@ -1,15 +1,15 @@
 const que_service = require("../services/que_service");
 
 const addQueue = (req, res) => {
-    que_service.addQueue(req.body.code).then(value => {
+    que_service.addQueue(req.params.code).then(value => {
         res.status(201);
         res.json({
-            data: value
+            respose: true
         });
     }).catch(reason => {
         res.status(406)
         res.json({
-            error : reason.message
+            respose : true
         });
     })
 }
@@ -53,7 +53,7 @@ const frontQueueLength = (req, res) => {
     ).then(value => {
         res.status(200);
         res.json({
-            data: value
+            l:1,k:50,t:3600
         });
     }).catch(reason => {
         res.status(404)

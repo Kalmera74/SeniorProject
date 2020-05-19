@@ -3,9 +3,10 @@ const uuid = require("uuid");
 const moment = require("moment");
 const config = require('config');
 
+let qnum=0;
 function generateQR() {
     const qr_ins = {
-        code : uuid.v4(),
+        code : qnum=qnum+1,
         isActive : true,
         created_at : moment().format("YYYY-MM-DD HH:mm:ss"),
     }

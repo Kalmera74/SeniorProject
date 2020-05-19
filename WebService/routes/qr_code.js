@@ -18,7 +18,7 @@ const useQR = (req, res) =>{
     qr_code_service.useQR(req.params.code).then(value => {
         res.status(200)
         res.send({
-            message:"OK"
+            response:true
         })
     }).catch(reason => {
         res.status(406);
