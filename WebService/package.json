@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js --env dev",
-    "migrate": "node app.js -m --env dev",
-    "test": "jest",
-    "test-routes": "jest routes",
-    "test-service": "jest service"
+    "migrate": "node app.js -m --env dev"
   },
   "author": "",
   "license": "ISC",
@@ -18,11 +15,9 @@
     "config": "^3.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-validator": "^6.4.1",
     "knex": "^0.21.1",
     "moment": "^2.25.3",
     "morgan": "^1.10.0",
-    "shortid": "^2.2.15",
     "sqlite3": "^4.2.0",
     "supertest": "^4.0.2",
     "swagger-jsdoc": "^4.0.0",
@@ -31,14 +26,5 @@
   },
   "devDependencies": {
     "jest": "^26.0.1"
-  },
-  "jest": {
-    "verbose": true,
-    "testURL": "http://localhost",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "<rootDir>/test_env.js"
-    ],
-    "resetMocks": true
   }
 }

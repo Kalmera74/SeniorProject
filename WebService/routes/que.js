@@ -1,10 +1,7 @@
 const que_service = require("../services/que_service");
 
 const addQueue = (req, res) => {
-    que_service.addQueue({
-        name : req.body.name,
-        surname : req.body.surname
-    }).then(value => {
+    que_service.addQueue(req.body.code).then(value => {
         res.status(201);
         res.json({
             data: value
@@ -66,8 +63,6 @@ const frontQueueLength = (req, res) => {
     })
 }
 
-// req, res
-// request, respond 
 const setAverageTime = (req, res) => {
     que_service.setAverageTime(
         req.body.time
@@ -84,8 +79,7 @@ const setAverageTime = (req, res) => {
     })
 }
 
-// Then/Catch -> Promise (Javascript) 
-const getAverageTime =  (req, res) => {
+const getAverageTime = (req, res) => {
     que_service.getAverageTime(
     ).then(value => {
         res.status(200);

@@ -1,5 +1,8 @@
 {
   "database" : {
     "filename" : "que_test.sqlite"
+  },
+  "kiosk": {
+    "apiURL" : ""
   }
 }

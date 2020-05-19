@@ -1,4 +1,3 @@
-
 const api = require('express').Router();
 const qr_code = require('./qr_code');
 const que_code = require('./que');
@@ -65,62 +64,15 @@ api.route("/qr/:code")
  * @swagger
  * /queue:
  *   post:
- *     description: Add a customer into the queue
+ *     description: Add a customer into the queue with QR
  *     tags:
  *       - Queue
  *     produces:
  *       - application/json
- *     parameters:
- *       - name: name
- *         in: formData
- *         description: name of customer
- *         required: true
- *         schema:
- *           type: string
- *           format: string
- *       - name: surname
- *         in: formData
- *         description: surname of customer
- *         required: true
- *         schema:
- *           type: string
- *           format: string
- *     responses:
- *       200:
- *         description: queue
- *         schema:
- *           type: object
- *           required:
- *             - name
- *             - surname
- *             - code
- *             - created_at
- *         properties:
- *           name:
- *            type: string
- *           surname:
- *            type: string
- *           code:
- *            type: string
- *           created_at:
- *            type: datetime
- */
-api.route("/queue")
-    .post(que_code.addQueue);
-
-/**
- * @swagger
- * /queue/{code}:
- *   get:
- *     description: Get customer information into queue
- *     produces:
- *       - application/json
- *     tags:
- *       - Queue
  *     parameters:
  *       - name: code
- *         in: path
- *         description: special code for customer which is generated when joining the queue
+ *         in: formData
+ *         description: QR Code
  *         required: true
  *         schema:
  *           type: string
@@ -148,8 +100,8 @@ api.route("/queue")
  *           frontQueue:
  *            type: integer
  */
-api.route("/queue/:code")
-    .get(que_code.getQueueInfo);
+api.route("/queue")
+    .post(que_code.addQueue);
 
 /**
  * @swagger
@@ -259,5 +211,4 @@ api.route("/queue/stats/length")
 api.route("/queue/stats/length/:code")
     .get(que_code.frontQueueLength);
 
-// Nodejs Module Exports
 module.exports = api;

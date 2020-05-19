@@ -1,6 +1,6 @@
 const db = require("../db/db");
 const moment = require("moment");
-const shortid = require('shortid');
+const qr_code_service = require("./qr_code_service");
 
 function setAverageTime(time) {
     const insertData = {
@@ -16,7 +16,6 @@ function setAverageTime(time) {
 }
 
 function getAverageTime() {
-    // SELECT 'time' FROM average_time order by 'id' desc limit 1
     const query = db('average_time')
         .select('time')
         .orderBy('id', 'desc')
@@ -40,14 +39,10 @@ function  getQueueLength() {
         });
 }
 
-function frontQueueLength(code) {
+function frontQueueLength(id) {
     const query = db('queue')
         .where('isInQueue',true)
-        .where('id','<', function() {
-            this.select('id').from('queue')
-                .where('isInQueue',true)
-                .where('code',code).limit(1);
-        })
+        .where('id', '<',id)
         .count('id as total');
 
     return query
@@ -56,16 +51,16 @@ function frontQueueLength(code) {
         });
 }
 
-function getQueueInfo(code) {
+function getQueueInfo(id) {
     const query = db('queue')
         .select('*')
         .where('isInQueue',true)
-        .where('code',code)
+        .where('id', id);
 
 
     return query.then( async (value) => {
         const returnValue = value[0];
-        const frontQueue = (await frontQueueLength(returnValue.code).then().catch(reason => {
+        const frontQueue = (await frontQueueLength(returnValue.id).then().catch(reason => {
             throw reason;
         }));
         const averageTime = await getAverageTime();
@@ -77,21 +72,21 @@ function getQueueInfo(code) {
     });
 }
 
-function addQueue(queue) {
+function addQueue(qrCode) {
+    return  new Promise((resolve, reject) => {
+        qr_code_service.useQR(qrCode).then(()=>{
+                const insertData = {
+                    isInQueue : true,
+                    created_at : moment().format("YYYY-MM-DD HH:mm:ss"),
+                };
 
-    const insertData = {
-        name : queue.name,
-        surname : queue.surname,
-        code : shortid.generate(),
-        isInQueue : true,
-        created_at : moment().format("YYYY-MM-DD HH:mm:ss"),
-    };
-
-    return db('queue')
-        .insert(insertData).then(()=>{
-            delete insertData.isInQueue;
-            return insertData;
-        });
+                db('queue').insert(insertData).returning('id').then((id)=>{
+                    qr_code_service.generateQR().then(qr_code_service.sendQR);
+                    getQueueInfo(id[0]).then(resolve).catch(reject);
+                    })
+            }).catch(reject);
+            }
+        );
 }
 
 

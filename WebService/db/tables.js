@@ -2,11 +2,8 @@ const db = require("./db");
 
 const up = async () => {
     await db.schema.createTable("queue", (table)=>{
-        table.increments("id").primary; // int - bigint
-        table.string("name").notNullable();
-        table.string("surname").notNullable();
-        table.string("code").notNullable(); //nvarchar
-        table.boolean("isInQueue").notNullable(); //bit 
+        table.increments("id").primary;
+        table.boolean("isInQueue").notNullable();
         table.dateTime("created_at").notNullable();
     }).then()
         .catch(console.error);

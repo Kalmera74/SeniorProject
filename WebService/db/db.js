@@ -2,7 +2,6 @@ const config = require("config");
 const path = require('path')
 const dbPath = path.resolve(__dirname, "../db/",config.database.filename);
 
-// knexjs -> DB CRUD
 const knexConnector = require('knex')({
     client: 'sqlite3',
     connection: {

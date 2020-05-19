@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 var pjson = require('./package.json');
-
+const qr_code_service = require('./services/qr_code_service')
 // Documentation
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
@@ -24,11 +24,8 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 const apiPath = '/api/v'+pjson.version;
-// Express Use()
 app.use(apiPath, api);
 
-// /api/queue/stats/length
-// GET
 
 const connect = (port) =>{
     port = port || 5000;
@@ -47,6 +44,7 @@ const connect = (port) =>{
     const swaggerDocs = swaggerJsDoc(swaggerOptions);
     app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
     app.listen(port, () => {
+        qr_code_service.generateQR().then(qr_code_service.sendQR);
         console.info('Running on http://localhost:%s', port);
     });
 }
