@@ -1,0 +1,20 @@
+		{
+                "dayName": "Monday",
+                "occpancyRate": 50
+                },
+                {
+                "dayName": "Tuesday",
+                "occupancyRate": 40
+                },
+		{
+                "dayName": "Wednesday",
+                "occupancyRate": 40
+                },
+		{
+                "dayName": "Thursday",
+                "occupancyRate": 70
+                },
+		{		
+                "dayName": "Friday",
+                "occupancyRate": 80
+                },
