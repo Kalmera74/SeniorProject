@@ -62,7 +62,7 @@ api.route("/qr/:code")
 
 /**
  * @swagger
- * /queue:
+ * /queue/{code}:
  *   post:
  *     description: Add a customer into the queue with QR
  *     tags:
@@ -71,7 +71,7 @@ api.route("/qr/:code")
  *       - application/json
  *     parameters:
  *       - name: code
- *         in: formData
+ *         in: path
  *         description: QR Code
  *         required: true
  *         schema:
@@ -100,7 +100,7 @@ api.route("/qr/:code")
  *           frontQueue:
  *            type: integer
  */
-api.route("/queue")
+api.route("/queue/:code")
     .post(que_code.addQueue);
 
 /**
