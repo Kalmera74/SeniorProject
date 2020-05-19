@@ -3,6 +3,6 @@
     "filename" : "que_test.sqlite"
   },
   "kiosk": {
-    "apiURL" : "http://104.154.45.14/"
+    "apiURL" : "104.154.45.14"
   }
 }
