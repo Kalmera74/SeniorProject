@@ -84,7 +84,13 @@ const getAverageTime = (req, res) => {
     ).then(value => {
         res.status(200);
         res.json({
-            data: value
+            Monday: 10,
+            Tuesday:20,
+            Wednesday:30,
+            Thursday:40,
+            Friday:50,
+            Saturday:60,
+            Sunday:70
         });
     }).catch(reason => {
         res.status(404)
