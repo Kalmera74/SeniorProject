@@ -2,10 +2,11 @@ const db = require("../db/db");
 const uuid = require("uuid");
 const moment = require("moment");
 const config = require('config');
-
+const request = require('request')
+let qnum=0;
 function generateQR() {
     const qr_ins = {
-        code : uuid.v4(),
+        code : qnum=qnum+1,
         isActive : true,
         created_at : moment().format("YYYY-MM-DD HH:mm:ss"),
     }
@@ -33,16 +34,16 @@ function useQR(code){
 }
 
 function sendQR(qr){
-    const apiURL = "104.154.45.14";
+    const apiURL = config.kiosk.apiURL;
     if(!apiURL){
         console.error('API URL was not set')
         return;
     }
     request.post(
-        "104.154.45.14",
+        apiURL,
         {
             json: {
-                code:qr.code
+                qnumber:qr.code
             }
         },
         (error, res, body) => {
