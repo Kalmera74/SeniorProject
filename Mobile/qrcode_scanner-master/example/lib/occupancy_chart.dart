@@ -1,6 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:qrscan_example/main.dart';
 import 'package:qrscan_example/subscriber_series.dart';
 
 class OccupancyChart extends StatelessWidget {
