@@ -9,6 +9,11 @@ app = Flask(__name__)
 
 queue = list()
 
+# Google Cloud Compute 
+host="10.128.0.3"
+port=80
+
+
 # Uncomment when on Raspberry PI
 #bus = smbus.SMBus(1)
 
@@ -54,7 +59,7 @@ def displayQR(qrnum):
 
 
 
-
-app.run(debug=False)
+#app.run(host=host,port=port)
+app.run(debug=False,port=4000)
 
 
