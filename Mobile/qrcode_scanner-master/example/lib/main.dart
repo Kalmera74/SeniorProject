@@ -53,11 +53,8 @@ Future getQue(String str) async {
     //2. sayfaya geç
     qNum = str;
     // getQueStatFunc(str);
-    print(
-        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+
     await Get.to(SubPage());
-    print(
-        'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -72,8 +69,9 @@ Future getQueStatFunc(String str) async {
     // then parse the JSON.
 
     Map<String, dynamic> user = jsonDecode(res.body.toString());
-    // SubPage().
     t = user['t'].toString();
+    l = user['l'].toString();
+    k = user['k'].toString();
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -193,7 +191,6 @@ class SubPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     getQueStatFunc(qNum);
-    print(t);
     return Scaffold(
       appBar: AppBar(
         title: Text('Sub Page'),
@@ -203,24 +200,15 @@ class SubPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text('Your Queue Number '),
+            Text(l),
+            Text('Your number '),
+            Text(k),
+            Text('Approximate Time Length in seconds '),
             Text(t),
-            RaisedButton(
-              textColor: Colors.white,
-              color: Colors.redAccent,
-              child: Text('Back to Main Page'),
-              onPressed: () {
-                // TODO
-              },
-            )
           ],
         ),
       ),
     );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }
