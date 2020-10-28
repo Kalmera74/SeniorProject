@@ -1,8 +1,12 @@
 {
-  "database" : {
-    "filename" : "que_service.sqlite"
+  "database": {
+    "filename": "que_service.sqlite"
   },
   "kiosk": {
-    "apiURL" : "http://104.154.45.14"
+    "apiURL": "http://104.154.45.14"
+  },
+  "auth": {
+    "secret": "su$#21l%21$£1",
+    "expiredTime": "1h"
   }
 }
