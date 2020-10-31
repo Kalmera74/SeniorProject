@@ -1,63 +1,59 @@
-const db = require("../db/db");
+// Models
+import QrCode from "../models/qrCode";
+
+// Requirements
+import express from "express";
+
+// Utils
+import { successResp, errorResp } from "../util/http_util";
+
 const uuid = require("uuid");
 const moment = require("moment");
-const config = require('config');
-const request = require('request')
-let qnum=0;
-function generateQR() {
-    const qr_ins = {
-        code : qnum=qnum+1,
-        isActive : true,
-        created_at : moment().format("YYYY-MM-DD HH:mm:ss"),
-    }
+const config = require("config");
+const request = require("request");
 
-    return db("qr_code")
-        .insert(qr_ins)
-        .then(()=>{
-            delete qr_ins.isActive;
-            return qr_ins;
-        });
-}
+let qnum = 0;
 
-function useQR(code){
-    return db('qr_code')
-        .where('code', code)
-        .where('isActive', true)
-        .update({
-        "isActive" : false,
-        "used_at" : moment().format("YYYY-MM-DD HH:mm:ss"),
-    }).then((effectedRows) => {
-        if(effectedRows === 0)
-            throw new Error("Qr Not Found");
-        })
-        return;
-}
+const generateQR = (req, res) => {
+  const qrIns = {
+    code: (qnum = qnum + 1),
+    isActive: true,
+    created_at: moment().format("YYYY-MM-DD HH:mm:ss"),
+  };
 
-function sendQR(qr){
-    const apiURL = config.kiosk.apiURL;
-    if(!apiURL){
-        console.error('API URL was not set')
-        return;
-    }
-    request.post(
-        apiURL,
-        {
-            json: {
-                qnumber:qr.code
-            }
-        },
-        (error, res, body) => {
-            if (error) {
-                console.error(error)
-                return
-            }
-            console.log(`statusCode: ${res.statusCode}`)
-            console.log(body)
-        }
+  new QrCode(qrIns)
+    .save()
+    .then((savedQR) => {
+      successResp(res, savedQR, 201);
+    })
+    .catch((err) => {
+      errorResp(res, err);
+    });
+};
+
+const useQR = (req, res) => {
+  const { code } = req.params;
+
+  QrCode.where({ code, isActive: true })
+    .save(
+      {
+        isActive: false,
+        used_at: moment().format("YYYY-MM-DD HH:mm:ss"),
+      },
+      { method: "update" }
     )
-}
+    .then(() => {
+      successResp(res, true);
+    })
+    .catch((err) => {
+      errorResp(res, err);
+    });
+};
 
+const router = express.Router();
 
-module.exports.generateQR = generateQR;
-module.exports.useQR = useQR;
-module.exports.sendQR = sendQR;
+router.route("/qr/").post(generateQR);
+router.route("/qr/:code").put(useQR);
+
+export default router;
+
