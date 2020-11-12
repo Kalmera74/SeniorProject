@@ -1,9 +1,9 @@
 import requests
-import smbus
+import smbus2
 
 
 # Uncomment when on Raspberry PI
-#bus=smbus.SMBus(1)
+#bus=smbus2.SMBus(1)
 
 
 # Could get the address from the arduino that send the iterate request instead of main.py

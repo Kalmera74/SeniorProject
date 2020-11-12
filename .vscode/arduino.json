@@ -1,0 +1,6 @@
+{
+    "programmer": "AVR ISP",
+    "board": "arduino:avr:uno",
+    "port": "COM6",
+    "sketch": "Kiosk\\master\\master.ino"
+}

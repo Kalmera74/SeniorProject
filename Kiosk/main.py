@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import pyqrcode
-import smbus
+#import smbus2
 import os
 
 
@@ -50,8 +50,9 @@ def displayQR(qrnum):
     if (int(qrnum) < 1 or qrnum == None):
         return False
     try:
-        url = pyqrcode.create(qrnum)
+        url = pyqrcode.create(qrnum)        
         print(url.terminal(quiet_zone=1))
+        print(queue)
         return True
     except:
         return False
