@@ -1,9 +1,9 @@
-import db from "../db";
+import db from '../db';
 
-const bookshelf = require("bookshelf")(db);
+const bookshelf = require('bookshelf')(db);
 
-const AverageTime = bookshelf.model("AverageTime", {
-  tableName: "average_time",
+const AverageTime = bookshelf.model('AverageTime', {
+    tableName: 'average_time',
 });
 
 export default AverageTime;

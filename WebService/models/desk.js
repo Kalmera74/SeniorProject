@@ -1,9 +1,9 @@
-import db from "../db";
+import db from '../db';
 
-const bookshelf = require("bookshelf")(db);
+const bookshelf = require('bookshelf')(db);
 
-const Desk = bookshelf.model("Desk", {
-  tableName: "desk",
+const Desk = bookshelf.model('Desk', {
+    tableName: 'desks',
 });
 
 export default Desk;
