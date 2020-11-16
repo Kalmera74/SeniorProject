@@ -1,36 +1,36 @@
-import server from "./server";
-import { program } from "commander";
+import server from './server';
+import {program} from 'commander';
 
 program
-  .option("-m, --migrate", "migrate database")
-  .option("-s, --seed", "insert seed data into database")
-  .option("-p, --port <port>", "api port (default: 5000)")
-  .option("-e, --env <env>", "environment for database (dev, test)");
+    .option('-m, --migrate', 'migrate database')
+    .option('-s, --seed', 'insert seed data into database')
+    .option('-p, --port <port>', 'api port (default: 5000)')
+    .option('-e, --env <env>', 'environment for database (dev, test)');
 
 program.parse(process.argv);
 
-process.env.NODE_ENV = program.env || "dev";
+process.env.NODE_ENV = program.env || 'dev';
 
 console.info(`SET ENV : ${process.env.NODE_ENV}`);
 if (program.port) {
-  console.info(`SET PORT : ${program.port}`);
+    console.info(`SET PORT : ${program.port}`);
 }
 
 if (program.migrate) {
-  const db = require("./db/");
-  db.migrate.rollback().then(() => {
-    db.migrate.latest().then(() => {
-      console.info("Migration Completed");
-      if (program.seed) {
-        db.seed
-          .run()
-          .then(() => {
-            console.info("Seed Completed");
-          })
-          .catch(console.error);
-      }
+    const db = require('./db/');
+    db.migrate.rollback().then(() => {
+        db.migrate.latest().then(() => {
+            console.info('Migration Completed');
+            if (program.seed) {
+                db.seed
+                    .run()
+                    .then(() => {
+                        console.info('Seed Completed');
+                    })
+                    .catch(console.error);
+            }
+        });
     });
-  });
 } else {
-  server.connect(program.port);
+    server.connect(program.port);
 }
