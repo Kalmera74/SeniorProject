@@ -1,71 +1,85 @@
 # Queue System API
 
-Basic Queue API System by using Sqlite3 
+Basic Queue API System by using PostgreSQL
 
 ## Get Started
 
 ### Requirements
-- NodeJS Version v12.6.2
+
+- NodeJS Version v12.18.3
 - NPM Version v6.14.4
 
 For checking:
-- [ ] `node -v` 
-- [ ] `npm -v` 
 
+- [ ] `node -v`
+- [ ] `npm -v`
 
 ### Before launch program, install node modules
-```
+
+```bash
 npm install
 ```
 
 ### Write Kiosk API's url to each json file inside the config folder
 
+### Change related connection areas used while creating postgresql index js and config file
+
 ### Set Environment
+
 Environments:
+
 - test : for testing
 - dev : for development
 
 `Default : dev`
 
-```
-node app.js --env test/dev
+```bash
+npm run start
 ```
 
 ### Migrate
-Create all tables by using config file on Sqlite3
 
+Create all tables
+
+```bash
+npm run migrate
 ```
-node app.js --migrate
+
+or
+
+Create all tables with seed data
+
+```bash
+npm run migrate:seed
 ```
+
+> Seed data includes one admin user (Username : admin, Password : admin)
 
 ### Test
 
-Test Routes
+Test All System
+
+```bash
+npm run test
 ```
-npm run test-routes
-```
-Test Services
-```
-npm run test-service
+
+You should see these after testing:
+
+```bash
+Test Suites: 10 passed, 10 total
+Tests:       81 passed, 81 total
 ```
 
 ## Start API Server
 
 By default,
-```
+
+```bash
 npm run start
 ```
+
 By special configurations
-```
+
+```bash
 node app.js --port 5050
 ```
-For details :  `node app.js --help`
-
-## Documentation
-
-Swagger doc will be generated, when start the server on  `/api-docs/`.
-
-For example : `http://localhost:5000/api-docs/`
-
-
-
