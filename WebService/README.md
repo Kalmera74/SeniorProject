@@ -83,3 +83,6 @@ By special configurations
 ```bash
 node app.js --port 5050
 ```
+
+Coding standarts
+(https://github.com/airbnb/javascript=
