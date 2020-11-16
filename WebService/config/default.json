@@ -1,7 +1,10 @@
 {
   "database": {
-    "filename": "que_service.sqlite"
-  },
+    "host" : "127.0.0.1",
+    "user" : "me",
+    "password" : "databasepostgrepass589",
+    "database" : "projectdb"
+   },
   "kiosk": {
     "apiURL": "http://104.154.45.14"
   },

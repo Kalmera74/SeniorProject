@@ -1,6 +1,6 @@
 {
   "database": {
-    "filename": "que_service.sqlite"
+    "filename": "que_service.postgresql"
   },
   "kiosk": {
     "apiURL": "http://104.154.45.14"
