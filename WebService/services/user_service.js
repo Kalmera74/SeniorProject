@@ -1,31 +1,40 @@
 import express from 'express';
 import moment from 'moment';
+import cryptoRandomString from 'crypto-random-string';
 // Models
 import UserModel from '../models/user';
 import RefModel from '../models/refLink';
+
 // Utils
 import {errorResp, successResp} from '../util/http_util';
 const router = express.Router();
 
 // Endpoints
-const removeUser = (req, res) => {
-    const {id} = req.params;
 
-    if (!Number.isInteger(Number(id))) {
-        errorResp(res, new Error('id must be number'));
+// Removes portal user by admin
+//check username if exists change delete is true
+const removeUser = (req, res) => {
+    const {username} = req.params;
+
+    if (Number.isInteger(Number(username))) {
+        errorResp(res, new Error('username cant be number'));
         return;
     }
 
-    UserModel.where({id, is_deleted: false})
+    UserModel.where({username:username, is_deleted: false})
         .save({is_deleted: true}, {method: 'update'})
         .then(() => {
-            successResp(res, {id});
+            successResp(res, {username});
         })
         .catch((err) => {
             errorResp(res, err);
         });
 };
 
+
+// list users
+//list users which are not deleted
+//give only 2 colums rest are not required
 const listUsers = (req, res) => {
     UserModel.where({is_deleted: false})
         .fetchAll({
@@ -45,9 +54,12 @@ const listUsers = (req, res) => {
     Create ref link for register as portal user
 */
 
+// creating new referance link for portal to be used 15 character
+//expire date 1 day
+
 const createRefLink = (req, res) => {
 
-    let ref = randomString(15);
+    let ref = cryptoRandomString({length: 15});
     let expireDate = moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
     new RefModel({
         ref_code: ref,
@@ -62,20 +74,8 @@ const createRefLink = (req, res) => {
         });
 };
 
-/*
-    Create a random string
-*/
-const randomString = (length) => {
-    let result = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-};
 
-/*
+/* no need right now if 2 admin needs to login or change portal to user
     Set priority the user 
     
     0 => User
@@ -93,7 +93,10 @@ const setPriority = (req, res) => {
         errorResp(res, new Error('priority must be number'));
         return;
     }
-    
+    //in usermodel where id is userıd fetch the data (all the field are required) 
+    //after query comlete we get a result İn user model where id is user id save
+    //his priority key to priority that we send with a request and use update
+    //method to update user table Get updated result 
     UserModel
         .where('id', userId)
         .fetch({require: true})
@@ -119,9 +122,11 @@ const setPriority = (req, res) => {
         });
 };
 
-router.route('/user/:id').delete(removeUser);
+
+router.route('/user/:nationID').delete(removeUser);
 router.route('/user').get(listUsers);
 router.route('/user/createRefLink').get(createRefLink);
 router.route('/user/setPriority').post(setPriority);
 
 export default router;
+
