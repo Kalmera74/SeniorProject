@@ -10,14 +10,10 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:http/http.dart' as http;
 import 'package:qrscan_example/occupancy_chart.dart';
 import 'package:qrscan_example/subscriber_series.dart';
+import 'package:qrscan_example/Screens/QueuePage.dart';
 
 final String geturl = 'http://34.71.187.226:5000/api/v0.1.0/queue/stats/time';
 final String getQuePoint = 'http://34.71.187.226:5000/api/v0.1.0/queue/';
-final String getQueStat =
-    'http://34.71.187.226:5000/api/v0.1.0/queue/stats/length/';
-
-String qNum;
-String t, l, k;
 
 //Get Occupancy Data
 Future getOccuData() async {
@@ -38,7 +34,7 @@ Future getOccuData() async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load Occupancy Data!');
   }
 }
 
@@ -57,24 +53,7 @@ Future getQue(String str) async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-Future getQueStatFunc(String str) async {
-  final res = await http.get(getQueStat + str);
-  if (res.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-
-    Map<String, dynamic> user = jsonDecode(res.body.toString());
-    t = user['t'].toString();
-    l = user['l'].toString();
-    k = user['k'].toString();
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load Subpage');
   }
 }
 
@@ -181,32 +160,6 @@ class _MyAppState extends State<MyApp> {
       getQue(barcode).then((value) => null);
       //call /queue/{code}
     }
-  }
-}
-
-class SubPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    getQueStatFunc(qNum);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sub Page'),
-        backgroundColor: Colors.redAccent,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Your Queue Number '),
-            Text(l),
-            Text('Your number '),
-            Text(k),
-            Text('Approximate Time Length in milliseconds '),
-            Text(t),
-          ],
-        ),
-      ),
-    );
   }
 }
 

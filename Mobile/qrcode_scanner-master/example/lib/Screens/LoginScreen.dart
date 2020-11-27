@@ -7,8 +7,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp2());
-
 /// This is the main application widget.
 class MyApp2 extends StatelessWidget {
   static const String _title = 'Login Page';
@@ -39,12 +37,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var kPrimaryMouseButton2 = kPrimaryMouseButton;
     return Form(
       key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           TextFormField(
             maxLength: 11,
@@ -93,3 +90,5 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
+
+void main() => runApp(MyApp2());
