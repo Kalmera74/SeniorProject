@@ -6,20 +6,6 @@ import { Row, Col, Card, message, Skeleton } from "antd";
 
 import { Doughnut, Bar, Pie, HorizontalBar } from "react-chartjs-2";
 
-// const bgColors = [
-//     "#FF6384",
-//     "#36A2EB",
-//     "#FFCE56",
-//     "#75daad",
-//     "#FF6633",
-//     "#FFB399",
-//     "#ad62aa",
-//     "#ed6663",
-//     "#05dfd7",
-//     "#ffbd69",
-//     "#00a8cc",
-//     "#ff677d"
-//   ];
 const bgColors = [
   "#FF6384",
   "#36A2EB",
@@ -45,7 +31,6 @@ const DisplayCard = ({ children, title }) => {
 };
 
 const findOccurence = (data, key) => {
-  //ref https://stackoverflow.com/questions/29957390/counting-occurrences-of-object-values
   const occ = data.reduce(function(sums, entry) {
     sums[entry[key]] = (sums[entry[key]] || 0) + 1;
     return sums;
@@ -68,7 +53,6 @@ const findTop = (data, topNum, displayOther, shuffle) => {
     return total + num;
   };
   const sum = Object.values(data).reduce(findSumFuc);
-  // inspired by https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
   let keysSorted = Object.keys(data).sort((a, b) => {
     return data[b] - data[a];
   });
@@ -229,7 +213,7 @@ class StatisticsPage extends React.Component {
                 <DisplayCard children={this.AgeChart()} title="Age Groups"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard children={this.LanguageChart()} title="Weekly Statistics"></DisplayCard>
+                <DisplayCard children={this.BirthMonthChart()} title="Weekly Statistics"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard
@@ -241,7 +225,7 @@ class StatisticsPage extends React.Component {
                 <DisplayCard children={this.BirthMonthChart()} title="Montly Statistics"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard children={this.CityChart()} title="Desks"></DisplayCard>
+                <DisplayCard children={this.CityChart()} title="Desks' Occupancy"></DisplayCard>
               </Col>
             </Row>
           </div>

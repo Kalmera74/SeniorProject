@@ -5,6 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import { GlobalContextProvider } from "./components/GlobalContext";
+import LoginPage from "./routes/login";
 
 class Site extends React.Component {
   // constructor(props) {

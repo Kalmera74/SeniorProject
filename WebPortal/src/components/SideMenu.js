@@ -45,10 +45,10 @@ class SideMenu extends React.Component {
           <span>Portal Users</span>
           <NavLink to="/portalUsers" />
         </Menu.Item>
-        <Menu.Item key="/login">
+        {/* <Menu.Item key="/login">
           <span>Login</span>
           <NavLink to="/login" />
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
     );
   }
