@@ -1,5 +1,5 @@
-# CTIS 411 Senior Project WebPortal Sub-System <br />
-
+# CTIS 411 Senior Project WebPortal Sub-System 
+&nbsp;
 
 # Coding Guidelines - ReactJS
 
