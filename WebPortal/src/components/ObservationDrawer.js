@@ -40,10 +40,10 @@ class ObservationDrawer extends React.Component {
         json = await requestObservation(this.props.user.resource.id);
       } catch (e) {
         json = getObservationDemo();
-        message.warn({
-          content: "Network Error, the server might be down. Local demo data is loaded.",
-          duration: 2
-        });
+        // message.warn({
+        //   content: "Network Error, the server might be down. Local demo data is loaded.",
+        //   duration: 2
+        // });
       }
 
       this.setState({

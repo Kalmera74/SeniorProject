@@ -75,10 +75,10 @@ function getUserList(message) {
         message.success({ content: "User data loaded!", duration: 2 });
       } catch (e) {
         json = getUserDemo();
-        message.warn({
-          content: "Network Error, the server might be down. Local demo data is loaded.",
-          duration: 5
-        });
+        // message.warn({
+        //   content: "Network Error, the server might be down. Local demo data is loaded.",
+        //   duration: 5
+        // });
       }
       window.$globalUsers = json;
       hideLoading();
