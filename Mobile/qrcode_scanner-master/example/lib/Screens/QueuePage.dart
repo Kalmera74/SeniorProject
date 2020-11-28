@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -126,8 +127,21 @@ class SubPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('Forfeit Queue?'),
+              content: Text('Please Confirm'),
+              actions: [
+                FlatButton(onPressed: null, child: Text('No')),
+                FlatButton(onPressed: null, child: Text('Yes'))
+              ],
+            ),
+          );
+        },
         child: Icon(Icons.cancel),
-        onPressed: showDialog(context: this),
+        backgroundColor: Colors.redAccent,
       ),
     );
   }
