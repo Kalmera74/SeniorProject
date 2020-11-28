@@ -162,7 +162,7 @@ class StatisticsPage extends React.Component {
     return <Bar data={data} />;
   };
 
-  MaritalStatusChart = () => {
+  StatusChart = () => {
     const occ = findOccurence(this.state.patients, "maritalStatus");
     console.log(occ);
     const data = {
@@ -180,7 +180,7 @@ class StatisticsPage extends React.Component {
     return <HorizontalBar data={data} />;
   };
 
-  BirthMonthChart = () => {
+  MonthChart = () => {
     const occ = findOccurence(this.state.patients, "birthMonth");
     console.log(occ);
     const data = {
@@ -213,16 +213,16 @@ class StatisticsPage extends React.Component {
                 <DisplayCard children={this.AgeChart()} title="Age Groups"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard children={this.BirthMonthChart()} title="Weekly Statistics"></DisplayCard>
+                <DisplayCard children={this.MonthChart()} title="Weekly Statistics"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard
-                  children={this.MaritalStatusChart()}
+                  children={this.StatusChart()}
                   title="Rejected Desks"
                 ></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard children={this.BirthMonthChart()} title="Montly Statistics"></DisplayCard>
+                <DisplayCard children={this.MonthChart()} title="Montly Statistics"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard children={this.CityChart()} title="Desks' Occupancy"></DisplayCard>

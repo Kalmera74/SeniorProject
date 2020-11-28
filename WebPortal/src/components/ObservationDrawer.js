@@ -81,7 +81,7 @@ class ObservationDrawer extends React.Component {
     const { visible } = this.props;
     const user = this.props.user && this.props.user.resource;
 
-    // console.log("CONTEXT UPDATE", this.context);
+    
     const ViewRawBtn = props => {
       return (
         <div style={{ margin: "auto", textAlign: "center", padding: "10px 0" }}>
@@ -115,7 +115,6 @@ class ObservationDrawer extends React.Component {
           });
 
           if (valueKey === "component") {
-            //special case - blood pressure
             valueItems = obs.component.map(blood => {
               return (
                 <Descriptions.Item key={keyGen()} label={blood.code?.text}>
