@@ -58,7 +58,7 @@ class UserTable extends Component {
         fixed: "left"
       },
       {
-        title: "Observations",
+        title: "Observation",
         dataIndex: "raw",
         key: "raw",
         width: 120,
