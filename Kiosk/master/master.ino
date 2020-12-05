@@ -2,6 +2,7 @@
 
 #define SLAVE 0x08 // get this from slavve when it sends the iteration request
 byte i2c_rcv;
+int dummyQueNum = 1;
 
 void setup()
 {
@@ -21,8 +22,11 @@ void loop()
   }
   Serial.write("s");
     Serial.write(res);
-  if (res == 'k')
-    send(45, SLAVE);
+  if (res == 'k'){
+    send(dummyQueNum++, SLAVE);
+
+  }
+    
 
 }
 
