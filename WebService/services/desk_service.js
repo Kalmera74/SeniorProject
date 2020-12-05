@@ -8,15 +8,15 @@ import {errorResp, successResp} from '../util/http_util';
 
 // Endpoints
 
-const createDesk = (req, res) => {
+//Accessible by admin only
 
+const createDesk = (req, res) => {
     const {name} = req.body;
 
     if (!name) {
         errorResp(res, new Error('Name must be exists'));
         return;
     }
-
     new DeskModel({
         name,
     })
@@ -30,12 +30,10 @@ const createDesk = (req, res) => {
 };
 
 /*
-  Passive Remove, set is_deleted = true
+  // Delete desk from system
 */
 const removeDesk = (req, res) => {
-
     const {id} = req.params;
-
     if (!Number.isInteger(Number(id))) {
         errorResp(res, new Error('id must be number'));
         return;
@@ -63,7 +61,6 @@ const removeDesk = (req, res) => {
   List desk without deleted ones
 */
 const listDesks = (req, res) => {
-
     DeskModel.where({
         is_deleted: false,
     })
@@ -75,7 +72,6 @@ const listDesks = (req, res) => {
             successResp(res, {data: result});
         });
 };
-
 /*
   Activate / Deactivate a desk
 */
@@ -104,7 +100,7 @@ const setActivityToDesk = (req, res) => {
         });
 
 };
-
+// Adjust Average time
 const setAverageTime = (req, res) => {
 
     const {time, deskId} = req.body || {};
@@ -132,6 +128,9 @@ const setAverageTime = (req, res) => {
             errorResp(res, err);
         });
 };
+
+// Get average time
+//this function getch avg time from db and send back response to user
 
 const getAverageTime = (req, res) => {
 

@@ -55,8 +55,8 @@ const portalRegister = async (req, res) => {
     const {token} = req.params
     const {username, password} = req.body;
 
-    if(Number.isInteger(parseInt(token))){
-        errorResp(res, new Error('Invalid url'));
+    if(Number.isInteger(parseInt(username))){
+        errorResp(res, new Error('username can\'t be a integer'));
         return;
     }
 
@@ -120,7 +120,8 @@ const portalRegister = async (req, res) => {
 
 const mobileLogin = (req, res) => {
 
-    const {nationID, password} = req.body;
+    const {password} = req.body;
+    const nationID = parseInt(req.body.nationID);
 
     if (!nationID || !password) {
         errorResp(res, new Error('nationID and Password are required'));
@@ -128,7 +129,7 @@ const mobileLogin = (req, res) => {
     }
     
 
-    UserModel.where({nationID})
+    UserModel.where({nationID:nationID, is_deleted:false})
         .fetch()
         .then((user) => {
             
@@ -156,7 +157,6 @@ const mobileLogin = (req, res) => {
                 });
         })
         .catch((err) => {
-            console.error(err);
             errorResp(res, new Error('Non-exists nationID'));
         });
 };
@@ -172,7 +172,7 @@ const systemLogin = (req, res) => {
         return;
     }
 
-    UserModel.where({username})
+    UserModel.where({username:username, is_deleted:false})
         .fetch()
         .then((user) => {
            
@@ -200,7 +200,6 @@ const systemLogin = (req, res) => {
                 });
         })
         .catch((err) => {
-            console.error(err);
             errorResp(res, new Error('Non-exists Username'));
         });
 };

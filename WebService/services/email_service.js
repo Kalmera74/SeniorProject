@@ -1,6 +1,8 @@
 //Email
 import Email from '../util/email'
 
+//Admin send mail
+
 module.exports = (request, response) => {
     const {message, email} = request.body;
 

@@ -8,9 +8,9 @@ import {errorResp, successResp} from '../util/http_util';
 // Endpoints
 
 /*
-    Get the operations of authenticated user
+    Get the data operations of authenticated user mobile 17
 */
-
+//ids matched user's every data
 const getUserStatistics = (req, res) => {
     const {uid} = req.userData;
 

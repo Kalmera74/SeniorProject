@@ -93,10 +93,7 @@ const setPriority = (req, res) => {
         errorResp(res, new Error('priority must be number'));
         return;
     }
-    //in usermodel where id is userıd fetch the data (all the field are required) 
-    //after query comlete we get a result İn user model where id is user id save
-    //his priority key to priority that we send with a request and use update
-    //method to update user table Get updated result 
+    
     UserModel
         .where('id', userId)
         .fetch({require: true})
@@ -123,7 +120,7 @@ const setPriority = (req, res) => {
 };
 
 
-router.route('/user/:nationID').delete(removeUser);
+router.route('/user/:username').delete(removeUser);
 router.route('/user').get(listUsers);
 router.route('/user/createRefLink').get(createRefLink);
 router.route('/user/setPriority').post(setPriority);

@@ -8,6 +8,8 @@ import {errorResp, successResp} from '../util/http_util';
 import moment from 'moment';
 let qnum = 0;
 
+//Create Number for QR
+
 const generateQR = (req, res) => {
     const qrIns = {
         code: (qnum = qnum + 1),
@@ -24,6 +26,8 @@ const generateQR = (req, res) => {
             errorResp(res, err);
         });
 };
+
+// Use QR change activity
 
 const useQR = (req, res) => {
     const {code} = req.params;

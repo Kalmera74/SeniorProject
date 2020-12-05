@@ -1,8 +1,9 @@
 import express from 'express';
 
-import db from '../db';
+import db, { count } from '../db';
 // Models
 import AverageTimeModel from '../models/averageTime';
+import Desk from '../models/desk';
 import DeskUserModel from '../models/deskUser';
 import UserModel from '../models/user';
 // Utils
@@ -13,8 +14,9 @@ const moment = require('moment');
 // Endpoints
 
 /*
-    Get the average time of all desks
+    Get the average time of all desks 15
 */
+//query db model to get avg time 
 const getStatistics = (req, res) => {
 
     AverageTimeModel
@@ -33,20 +35,21 @@ const getStatistics = (req, res) => {
 };
 
 /*
-    
+    get the user statistics of specified user 18
 */
-const getUserStatisticsByUsername = (req, res) => {
-    const {username} = req.params;
+//specific users data
+const getUserStatisticsByNationID = (req, res) => {
+    const {nationID} = req.params;
 
-    if (!username) {
-        errorResp(res, new Error('username must be exists'));
+    if (!nationID) {
+        errorResp(res, new Error('nationID must be exists'));
         return;
     }
 
     new UserModel()
-        .where('username', username)
+        .where('nationID', nationID)
         .fetch({
-            columns: ['id', 'username', 'priority_key', 'is_deleted', 'created_at', 'updated_at']
+            columns: ['id', 'nationID', 'priority_key', 'is_deleted', 'created_at', 'updated_at']
         })
         .then((result) => {
             DeskUserModel.where('user_id', result.get('id'))
@@ -63,11 +66,42 @@ const getUserStatisticsByUsername = (req, res) => {
 };
 
 /*
-    Get system status
+    Get system status 30
 */
 const getPortalStatistics = async (req, res) => {
     let data = {};
 
+        /*
+        Get all the user related data
+    */
+   const userData = await UserModel
+   .where({})
+   .fetchAll()
+   .then(
+       (result) => result).catch(e => console.error(e));
+    //    console.log(userData);
+        data.totalUsers = userData.length;
+        data.deactiveUsers=0;
+        data.activeUsers=0;
+        data.portalUsers = 0;
+        data.adminUsers = 0;
+        data.mobileUsers = 0;
+        userData.models.forEach(user => {
+            if(user.attributes.is_deleted){
+                data.deactiveUsers+=1;
+            }
+            if(user.attributes.priority_key == '0'){
+                data.mobileUsers+=1;
+            }
+            else if (user.attributes.priority_key == '3'){
+                data.adminUsers +=1;
+            }
+            else if(user.attributes.priority_key == '10'){
+                data.portalUsers+=1;
+            }
+                
+        })
+        data.activeUsers = data.totalUsers - data.activeUsers;
     /*
         Get online users count
     */
@@ -76,9 +110,34 @@ const getPortalStatistics = async (req, res) => {
         .count('id')
         .then(
             (count) => {
-                data.onlineUsers = count;
+                data.usersInQueue = count;
 
             }).catch(e => console.error(e));
+
+            /* get Users that have finished there task */
+    await DeskUserModel
+    .where('is_finished', 1)
+    .count('id')
+    .then(
+        (count) => {
+            data.usersThatFinishedWork = count;
+        }
+    ).catch(e=> console.error(e))
+
+     /*
+        Get count of given up users
+    */
+
+   await DeskUserModel.where({
+    is_active: false,
+    is_finished: false,
+})
+    .count('id')
+    .then((count) => {
+        data.givenUpUsers = count;
+    })
+    .catch(e => console.error(e));
+
 
     /*
             Get average times of desks
@@ -98,37 +157,26 @@ const getPortalStatistics = async (req, res) => {
                 data.desks = result;
 
             }).catch(e => console.error(e));
-
-    /*
-        Get count of given up users
-    */
-
-    await DeskUserModel.where({
-        is_active: false,
-        is_finished: false,
-    })
-        .count('id')
-        .then((count) => {
-            data.givenUpUsers = count;
-        })
-        .catch(e => console.error(e));
-
+            // how many deactive desk are there
+            await Desk.where('is_active', 0).count('id').then(count => {
+                data.deactiveDesk = count;
+            })
+            .catch(e => console.error(e));
 
     successResp(res, data);
 
 };
 
 /*
-    Calculate average process time of desks, users in hourly, daily, weekly, monthly, yearly
+    Calculate average process time of desks, users in hourly, daily, weekly, monthly, yearly 25
 */
 const calculateAverageTimes = (req, res) => {
-
     db('desk_user')
         .select(db.raw('desk_id, user_id, EXTRACT(EPOCH FROM (finished_at - created_at ) ) as time, created_at'))
         .where('is_finished', 1)
         .then(
             (result) => {
-                let today = new Date().getTime();
+                // let today = new Date().getTime();
 
                /* let hourago = (today - (1000 * 60 * 60));
                 let yesterday = (today - (1000 * 60 * 60 * 24));
@@ -175,10 +223,10 @@ const calculateAverageTimes = (req, res) => {
 
 
                 result.forEach(row => {
+                    // will get time when user joind queue/ came to desk
                     let rowTimestamp = new Date(row.created_at).getTime();
 
                     let userId = row.user_id;
-
                     let userTemplate;
 
                     userTemplate = {
@@ -210,7 +258,7 @@ const calculateAverageTimes = (req, res) => {
                         }
                     };
 
-
+                        //data will store time data of all user and usertemplate store the data for a particuler user
                     if (rowTimestamp >= hourago) {
                         data.hourly.totalTime += row.time;
                         data.hourly.count += 1;
@@ -261,10 +309,11 @@ const calculateAverageTimes = (req, res) => {
                         userTemplate.yearly.count += 1;
                         userTemplate.yearly.averageTime = userTemplate.yearly.totalTime / userTemplate.yearly.count;
                     }
-
+                    // users.push({userId})
+                    // req.users = users;
                     users = addToUsers(users, userTemplate);
                 });
-
+                // console.log(req.users);
 
                 successResp(res, {desks: data, users});
 
@@ -315,40 +364,11 @@ const addToUsers = (users, user) => {
 
 };
 
-
-const testMiddleware = async () => {
-    let userId;
-
-    userId = await new UserModel({
-      username: 'testuser',
-      password: '123456',
-      priority_key: 0,
-    }).save().then((savedUser) => savedUser.id);
-    await new DeskUserModel({ user_id: userId, desk_id: 2, is_active: false, is_finished: true, created_at:moment().format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(1, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-    await new DeskUserModel({ user_id: userId, desk_id: 3, is_active: false, is_finished: true, created_at:moment().add(-70, 'minutes').format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(-70, 'minutes').add(5, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-    await new DeskUserModel({ user_id: userId, desk_id: 2, is_active: false, is_finished: true, created_at:moment().add(-90, 'minutes').format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(-90, 'minutes').add(5, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-    await new DeskUserModel({ user_id: userId, desk_id: 5, is_active: false, is_finished: true, created_at:moment().add(-1, 'months').format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(-1, 'months').add(5, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-    await new DeskUserModel({ user_id: userId, desk_id: 7, is_active: false, is_finished: true, created_at:moment().add(-1, 'years').format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(-1, 'years').add(2, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-  
-    userId = await new UserModel({
-      username: 'testuser2',
-      password: '123456',
-      priority_key: 0,
-    }).save().then((savedUser) => savedUser.id);
-    await new DeskUserModel({ user_id: userId, desk_id: 2, is_active: false, is_finished: true, created_at:moment().add(-70, 'minutes').format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(-70, 'minutes').add(2, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-    await new DeskUserModel({ user_id: userId, desk_id: 5, is_active: false, is_finished: true, created_at:moment().add(-1, 'months').format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(-1, 'months').add(6, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-    await new DeskUserModel({ user_id: userId, desk_id: 3, is_active: false, is_finished: true, created_at:moment().add(-1, 'years').format('YYYY-MM-DD HH:mm:ss') , finished_at: moment().add(-1, 'years').add(8, 'minutes').format('YYYY-MM-DD HH:mm:ss')}).save();
-
-}
-
 const router = express.Router();
 
 router.route('/getStatistics').get(getStatistics);
-router.route('/getUserStatisticsByUsername/:username').get(getUserStatisticsByUsername);
+router.route('/getUserStatisticsByNationID/:nationID').get(getUserStatisticsByNationID);
 router.route('/getPortalStatistics').get(getPortalStatistics);
 router.route('/calculateAverageTimes').get(calculateAverageTimes);
-
-router.route('/test').get(testMiddleware);
-
 
 export default router;
