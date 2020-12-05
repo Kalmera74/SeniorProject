@@ -5,6 +5,8 @@ import {errorResp} from '../util/http_util';
 // Config
 import config from 'config';
 
+// Function that checks the token before give priviledges to the user
+
 const {auth} = config;
 const authorize = (req, res, next) => {
     const {authentication, Authentication} = req.headers;

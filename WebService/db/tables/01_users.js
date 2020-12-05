@@ -1,7 +1,8 @@
 exports.up = (knex) => {
     return knex.schema.createTable('users', (table) => {
         table.increments('id').primary;
-        table.string('username').unique().notNullable();
+        table.string('username').unique();
+        table.integer('nationID').unique();
         table.string('password').unique().notNullable();
         table.integer('priority_key').defaultTo(1).notNullable();
         table.boolean('is_deleted').defaultTo(false).notNullable();
