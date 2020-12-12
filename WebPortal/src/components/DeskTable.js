@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Table, Skeleton } from "antd";
 import { parseAllUserData } from "../javascript/api";
 import { Popconfirm } from "antd";
+import Toggle from 'react-toggle';
+import "./Toggle.css";
 
 class DeskTable extends Component {
   constructor(props) {
@@ -65,31 +67,43 @@ class DeskTable extends Component {
         width: 330,
         sorter: (a, b) => a.id.localeCompare(b.id)
       },
-    //   {
-    //     title: "Manage",
-    //     dataIndex: "raw",
-    //     key: "raw",
-    //     width: 120,
-    //     render: obj => (
-    //       <a
-    //         // onClick={() => {
-    //         //   this.props.viewUser(obj);
-    //         // }}
-    //       >
-    //         <Popconfirm
-    //               placement="bottomRight"
-    //               title="Would you like to remove the user from the system?"
-    //               onConfirm={this.confirmLogout}
-    //               okText="Remove"
-    //               cancelText="Cancel"
-    //         >
-    //           Remove  
-    //         </Popconfirm>
-    //       </a>
+      {
+        title: "Enable/Disable",
+        dataIndex: "raw",
+        key: "raw",
+        width: 120,
+        render: obj => (
+          <a>
+            <Toggle
+              id='cheese-status'
+              defaultChecked={this.state.cheeseIsReady}
+              onChange={this.handleCheeseChange} />
+          </a>
           
-    //     ),
-    //     fixed: ""
-    //   },
+        ),
+        fixed: ""
+      },
+      {
+        title: "Remove",
+        dataIndex: "raw",
+        key: "raw",
+        width: 120,
+        render: obj => (
+          <a>
+            <Popconfirm
+                  placement="bottomRight"
+                  title="Would you like to remove the desk?"
+                  onConfirm={this.confirmLogout}
+                  okText="Remove"
+                  cancelText="Cancel"
+            >
+              Remove
+            </Popconfirm>
+          </a>
+          
+        ),
+        fixed: ""
+      }
     ];
 
     return (
