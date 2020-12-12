@@ -6,6 +6,7 @@ import UserPage from "./routes/users";
 import PortalUserPage from "./routes/portalUsers";
 import SearchPage from "./routes/search";
 import StatisticsPage from "./routes/statistics";
+import DesksPage from "./routes/desks";
 import NotFoundPage from "./routes/NotFoundPage";
 import HomePage from "./routes/home";
 import SideMenu from "./components/SideMenu";
@@ -102,6 +103,11 @@ const routes = [
     path: "/statistics",
     title: () => "Statistics",
     main: () => <StatisticsPage />
+  },
+  {
+    path: "/desks",
+    title: () => "Desks",
+    main: () => <DesksPage />
   },
   {
     path: "/login",

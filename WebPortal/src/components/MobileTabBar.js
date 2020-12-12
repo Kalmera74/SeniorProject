@@ -75,6 +75,17 @@ class TabBarMenu extends React.Component {
               history.push("/portalUsers");
             }}
           ></TabBar.Item>
+
+          <TabBar.Item
+            title="Desks"
+            key="Desks"
+            icon={<TeamOutlined style={iconNonSelectStyle} />}
+            selectedIcon={<TeamOutlined style={iconSelectedStyle} />}
+            selected={location.pathname === "/desks"}
+            onPress={() => {
+              history.push("/desks");
+            }}
+          ></TabBar.Item>
         </TabBar>
       </div>
     );
