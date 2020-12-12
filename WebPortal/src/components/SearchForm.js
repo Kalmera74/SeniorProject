@@ -26,24 +26,22 @@ const SearchForm = props => {
       onFinish={onFinish}
     >
       <Row gutter={24}>
+      <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={7}>
+              <Form.Item name={`id`} label={`User ID`}>
+                <Input placeholder="Enter User ID to filter" />
+              </Form.Item>
+        </Col>
         <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={1}>
           <Form.Item name={`name`} label={`User Name`}>
             <Input placeholder="Enter User's first or last name to filter" />
           </Form.Item>
         </Col>
         <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={2}>
-          <Form.Item name="birthdate" label="Birthdate Range">
+          <Form.Item name="birthdate" label="Date Used">
             <RangePicker />
           </Form.Item>
         </Col>
-        <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={3}>
-          <Form.Item name="gender" label="Gender">
-            <Select placeholder="Select a gender to filter" allowClear>
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-            </Select>
-          </Form.Item>
-        </Col>
+        
 
         {expand && (
           <React.Fragment>
@@ -65,11 +63,6 @@ const SearchForm = props => {
               </Form.Item>
             </Col> */}
 
-            <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={7}>
-              <Form.Item name={`id`} label={`User ID`}>
-                <Input placeholder="Enter User ID to filter" />
-              </Form.Item>
-            </Col>
             <Col xs={24} sm={24} md={23} lg={16} span={16} key={8}>
               <Form.Item name={"anythingElse"} label="Search for anything else">
                 <Input.TextArea placeholder="Just type anything you would like to search, you can search for Social Security Number, Driver's License, Passport Number, Ethics etc. Regular expression is supported." />
