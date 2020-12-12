@@ -32,11 +32,12 @@ class UserCard extends Component {
       >
         {userData && (
           <div>
-            <p>{userData.maritalStatus.text + ", " + userData.gender}</p>
-            <p>{userData.birthDate + ", " + userData.communication[0].language.text}</p>
-            <p>{userData.telecom.value}</p>
+            {/* <p>{userData.maritalStatus.text + ", " + userData.gender}</p> */}
             <p>{userData.id}</p>
-            <p>{userData.address[0].line[0] + ", " + userData.address[0].country}</p>
+            <p>{userData.birthDate}</p>
+            {/* <p>{userData.telecom.value}</p> */}
+            
+            <p>{userData.phone}</p>
           </div>
         )}
       </Card>

@@ -206,12 +206,12 @@ class StatisticsPage extends React.Component {
         {this.state.patients ? (
           <div>
             <Row className="statPadding">
-              <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              {/* <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard children={this.GenderChart()} title="Gender"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard children={this.AgeChart()} title="Age Groups"></DisplayCard>
-              </Col>
+              </Col> */}
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard children={this.MonthChart()} title="Weekly Statistics"></DisplayCard>
               </Col>
