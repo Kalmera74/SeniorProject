@@ -20,10 +20,6 @@ For checking:
 npm install
 ```
 
-### Write Kiosk API's url to each json file inside the config folder
-
-### Change related connection areas used while creating postgresql index js and config file
-
 ### Set Environment
 
 Environments:
@@ -53,22 +49,7 @@ Create all tables with seed data
 npm run migrate:seed
 ```
 
-> Seed data includes one admin user (Username : admin, Password : admin)
-
-### Test
-
-Test All System
-
-```bash
-npm run test
-```
-
-You should see these after testing:
-
-```bash
-Test Suites: 10 passed, 10 total
-Tests:       81 passed, 81 total
-```
+> Seed data includes one admin,potral,mobile user can be found in db> seeds>user seed
 
 ## Start API Server
 
