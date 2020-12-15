@@ -10,7 +10,7 @@ exports.seed = (knex) =>
                 priority_key: 3,
             },
             {
-                nationID: 12312,
+                nationID: 12345678999,
                 password: '123456',
                 priority_key: 0,
             },
