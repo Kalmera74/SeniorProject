@@ -1,7 +1,8 @@
 let userListDemo = require("./patientDemoData.json");
 let observationDemo = require("./observationDemoData.json");
 
-const SERVER_URL = "https://henryz.cc:5001/api/";
+//const SERVER_URL = "https://henryz.cc:5001/api/";
+const SERVER_URL = "https://senior.fastntech.com/";
 
 const moment = require("moment");
 
