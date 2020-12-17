@@ -51,15 +51,6 @@ class DeskTable extends Component {
 
     const columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        ellipsis: true,
-        width: 180,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        fixed: "left"
-      },
-      {
         title: "ID",
         dataIndex: "id",
         key: "id",
