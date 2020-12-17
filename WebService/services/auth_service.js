@@ -11,9 +11,9 @@ import config from 'config';
 
 const {auth} = config;
 
-const mobileRegister = (req, res) => {
+const mobileRegister = async (req, res) => {
 
-
+   //const token=req.params.token
     const {nationID, password} = req.body;
 
     if (!nationID || !password) {
@@ -21,6 +21,25 @@ const mobileRegister = (req, res) => {
         return;
     }
 
+   /*const is_TokenValid =await  UserModel.where({
+        token:token,
+    })
+        .fetchAll({
+            columns: ['token'],
+            require: true,
+        })
+        .then(() => {
+            return true;
+        })
+        .catch(err => {
+            if(err){
+                return false;
+
+            }
+        
+        });
+
+        if(is_TokenValid){*/
     UserModel.where({
         nationID,
     })
@@ -48,11 +67,18 @@ const mobileRegister = (req, res) => {
                     });
             }
         });
+
+    //}
+      /* else{
+            
+            errorResp(res, new Error('Invalid token'));
+            return;
+   }*/
 };
 
 const portalRegister = async (req, res) => {
 
-    const {token} = req.params
+   // const {token} = req.params
     const {username, password} = req.body;
 
     if(Number.isInteger(parseInt(username))){
@@ -64,9 +90,10 @@ const portalRegister = async (req, res) => {
         errorResp(res, new Error('username and Password are required'));
         return;
     }
-    const is_TokenValid =await  PortalVerificationStringModel.where({
+  /*  const is_TokenValid =await  PortalVerificationStringModel.where({
         token:token,
     })
+    
         .fetchAll({
             columns: ['token'],
             require: true,
@@ -81,7 +108,7 @@ const portalRegister = async (req, res) => {
             }
         
         });
-        if(is_TokenValid){
+        if(is_TokenValid){*/
             UserModel.where({
                 username,
             })
@@ -110,12 +137,12 @@ const portalRegister = async (req, res) => {
                             });
                     }
                 });
-        }
+        /*}
         else{
             
                  errorResp(res, new Error('Invalid token'));
                  return;
-        }
+        }*/
 };
 
 const mobileLogin = (req, res) => {
