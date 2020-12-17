@@ -1,3 +1,4 @@
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,6 +59,7 @@ class CountdownTimer extends StatefulWidget {
 }
 
 class _CountdownTimerState extends State<CountdownTimer> {
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   //Timer variables
   Timer _timer;
   int _start = _timerStart;
@@ -88,11 +90,39 @@ class _CountdownTimerState extends State<CountdownTimer> {
     super.dispose();
   }
 
+  // //gets the token for the cloud messaging
+  // getTokenz() async {
+  //   String token = await _firebaseMessaging.getToken();
+  //   print(token);
+  // }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     startTimer();
+
+    // _firebaseMessaging.configure(
+    //     onMessage: (Map<String, dynamic> message) async {
+    //   print("onMessage: $message");
+    //   showDialog(
+    //       context: context,
+    //       builder: (context) {
+    //         return AlertDialog(
+    //           title: Text(message['notification']['title']),
+    //           content: Text(message['notification']['body']),
+    //           actions: <Widget>[
+    //             FlatButton(
+    //               child: Text('Ok'),
+    //               onPressed: () {
+    //                 Navigator.of(context).pop();
+    //               },
+    //             )
+    //           ],
+    //         );
+    //       });
+    // });
+    // getTokenz();
   }
 
   @override
@@ -134,8 +164,16 @@ class SubPage extends StatelessWidget {
               title: Text('Forfeit Queue?'),
               content: Text('Please Confirm'),
               actions: [
-                FlatButton(onPressed: null, child: Text('No')),
-                FlatButton(onPressed: null, child: Text('Yes'))
+                FlatButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('Yes'),
+                  onPressed: null,
+                )
               ],
             ),
           );

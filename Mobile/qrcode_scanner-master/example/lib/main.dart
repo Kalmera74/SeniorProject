@@ -10,7 +10,7 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:http/http.dart' as http;
 import 'package:qrscan_example/occupancy_chart.dart';
 import 'package:qrscan_example/subscriber_series.dart';
-import 'package:qrscan_example/Screens/QueuePage.dart';
+import 'package:qrscan_example/Screens/QueueScreen.dart';
 
 final String geturl = 'http://34.71.187.226:5000/api/v0.1.0/queue/stats/time';
 final String getQuePoint = 'http://34.71.187.226:5000/api/v0.1.0/queue/';

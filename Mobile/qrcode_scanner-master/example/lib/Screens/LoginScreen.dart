@@ -4,8 +4,12 @@
 //
 // ![](https://flutter.github.io/assets-for-api-docs/assets/widgets/form.png)
 
-import 'package:flutter/gestures.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:qrscan_example/model/login_model.dart';
 
 /// This is the main application widget.
 class MyApp2 extends StatelessWidget {
@@ -33,7 +37,14 @@ class MyStatefulWidget extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  LoginRequestModel requestModel;
+
+  @override
+  void initState() {
+    super.initState();
+    requestModel = new LoginRequestModel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +57,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           TextFormField(
             maxLength: 11,
             keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            onSaved: (input) => requestModel.nationID = input,
             decoration: const InputDecoration(
               icon: Icon(Icons.person),
               hintText: 'Enter your TCKN',
             ),
             validator: (value) {
-              if (value.isEmpty || value.length < 11) {
+              if (value.isEmpty) {
                 return 'Please enter your TC!';
               }
               return null;
@@ -59,6 +72,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           TextFormField(
             obscureText: true,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            onSaved: (input) => requestModel.password = input,
             decoration: const InputDecoration(
               icon: Icon(Icons.lock),
               hintText: 'Enter your password',
@@ -77,8 +92,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 onPressed: () {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
-                  if (_formKey.currentState.validate()) {
-                    // Process data.
+                  if (validateAndSave()) {
+                    print(requestModel.toJson());
                   }
                 },
                 child: Text('Login'),
@@ -88,6 +103,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ],
       ),
     );
+  }
+
+  bool validateAndSave() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
   }
 }
 
