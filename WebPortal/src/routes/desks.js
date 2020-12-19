@@ -3,8 +3,7 @@ import DeskListDisplay from "../components/DeskListDisplay";
 import { getUserList } from "../javascript/api";
 import Header from "../components/Header";
 import Overlay from "../components/Overlay";
-import { message } from "antd";
-import { Button } from "antd";
+import { message, Button } from "antd";
 
 const moment = require("moment");
 
