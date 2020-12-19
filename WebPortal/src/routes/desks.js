@@ -40,7 +40,7 @@ class DesksPage extends React.Component {
       <div>
         <Overlay show={this.state.awaitingData}></Overlay>
         {!this.props.filter && <Header title="Desks List"></Header>}
-        <Button style={{ margin: 10, marginTop: -2 }} type="primary" htmlType="submit">
+        <Button style={{ margin: 10, marginTop: -10 }} type="primary" htmlType="submit">
             Add Desk
           </Button>
         <DeskListDisplay users={userData} loading={this.state.awaitingData} />
