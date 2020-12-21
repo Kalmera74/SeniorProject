@@ -8,7 +8,6 @@ class LoginPage extends React.Component {
             <div>
                 <Header title="Login"></Header>
                 <div className="base-container">
-                    {/* <div className="header">Web Portal</div> */}
                     <div className="content">
                         <div className="form">
                             <div className="form-group">

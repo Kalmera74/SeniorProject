@@ -4,7 +4,7 @@ import { Menu } from "antd";
 import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
-import { HomeOutlined, TeamOutlined, SearchOutlined, BarChartOutlined } from "@ant-design/icons";
+import { HomeOutlined, TeamOutlined, SearchOutlined, BarChartOutlined, DesktopOutlined } from "@ant-design/icons";
 
 class SideMenu extends React.Component {
   // constructor(props) {
@@ -20,10 +20,10 @@ class SideMenu extends React.Component {
         defaultSelectedKeys={["/"]}
         selectedKeys={[location.pathname]}
       >
-        <Menu.Item key="/">
+        <Menu.Item key="/home">
           <HomeOutlined />
           <span>Home</span>
-          <NavLink to="/" />
+          <NavLink to="/home" />
         </Menu.Item>
         <Menu.Item key="/users">
           <TeamOutlined />
@@ -46,7 +46,7 @@ class SideMenu extends React.Component {
           <NavLink to="/portalUsers" />
         </Menu.Item>
         <Menu.Item key="/desks">
-          <TeamOutlined />
+          <DesktopOutlined/>
           <span>Desks</span>
           <NavLink to="/desks" />
         </Menu.Item>
