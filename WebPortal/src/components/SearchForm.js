@@ -40,24 +40,6 @@ const SearchForm = props => {
 
         {expand && (
           <React.Fragment>
-            {/* <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={4}>
-              <Form.Item name={`phone`} label={`Phone number`}>
-                <Input placeholder="Enter phone number to filter" />
-              </Form.Item>
-            </Col> */}
-
-            {/* <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={5}>
-              <Form.Item name={`address`} label={`Country and Address`}>
-                <Input placeholder="Enter counrty code to filter" />
-              </Form.Item>
-            </Col> */}
-
-            {/* <Col xs={24} sm={24} md={12} lg={8} className="search_inputs" key={6}>
-              <Form.Item name={`maritalStatus`} label={`Marital Status`}>
-                <Input placeholder="Enter marital status to filter" />
-              </Form.Item>
-            </Col> */}
-
             <Col xs={24} sm={24} md={23} lg={16} span={16} key={8}>
               <Form.Item name={"anythingElse"} label="Search for anything else">
                 <Input.TextArea placeholder="Just type anything you would like to search. Regular expression is supported." />
