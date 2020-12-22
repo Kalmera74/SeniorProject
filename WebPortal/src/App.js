@@ -82,7 +82,7 @@ const routes = [
     path: "/",
     exact: true,
     title: () => "Web Portal",
-    main: () => <LoginPage />
+    main: () => <HomePage />
   },
   {
     path: "/users",
@@ -110,9 +110,9 @@ const routes = [
     main: () => <DesksPage />
   },
   {
-    path: "/home",
-    title: () => "Home",
-    main: () => <HomePage />
+    path: "/login",
+    title: () => "Login",
+    main: () => <LoginPage />
   },
   {
     title: () => "404 Not Found",

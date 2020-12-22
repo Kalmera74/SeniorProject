@@ -20,10 +20,10 @@ class SideMenu extends React.Component {
         defaultSelectedKeys={["/"]}
         selectedKeys={[location.pathname]}
       >
-        <Menu.Item key="/home">
+        <Menu.Item key="/">
           <HomeOutlined />
           <span>Home</span>
-          <NavLink to="/home" />
+          <NavLink to="/" />
         </Menu.Item>
         <Menu.Item key="/users">
           <TeamOutlined />
