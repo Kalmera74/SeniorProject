@@ -180,30 +180,8 @@ class ObservationDrawer extends React.Component {
                 {`${user.address[0].line[0]}, ${user.address[0].city}, ${user.address[0].state}, ${user.address[0].country}`}
               </Descriptions.Item>
             </Descriptions>
-            {/* <ViewRawBtn object={user}></ViewRawBtn> */}
-            {/* {observations ? (
-              observations
-            ) : (
-              <div>
-                <Skeleton active />
-                <Skeleton active />
-                <Skeleton active />
-                <Skeleton active />
-                <Skeleton active />
-              </div>
-            )} */}
           </div>
         )}
-
-        {/* <Drawer
-          title="Raw FHIR Data"
-          width={this.context.isMobile ? "100%" : "50%"}
-          closable={true}
-          onClose={this.onChildrenDrawerClose}
-          visible={this.state.rawDataDrawer}
-        >
-          <ReactJson src={this.state.rawDataDrawerData} />
-        </Drawer> */}
       </Drawer>
     );
   }
