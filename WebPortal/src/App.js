@@ -110,9 +110,9 @@ const routes = [
     main: () => <DesksPage />
   },
   {
-    path: "/login",
-    title: () => "Login",
-    main: () => <LoginPage />
+    path: "/home",
+    title: () => "Home",
+    main: () => <HomePage />
   },
   {
     title: () => "404 Not Found",
