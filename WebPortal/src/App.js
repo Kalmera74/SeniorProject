@@ -18,13 +18,10 @@ import logo from "./img/dashboard-logo.png";
 import profile from "./img/icon_user.png";
 
 import { CaretDownOutlined, UnorderedListOutlined, AppstoreOutlined } from "@ant-design/icons";
-
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { BrowserRouter as Router, Switch, Route, Link, useLocation } from "react-router-dom";
-
 import { Layout, Avatar, Popconfirm, Radio, Tooltip, Modal, message } from "antd";
 import GlobalContextConsumer from "./components/GlobalContext";
-
 import { GlobalContext, GlobalContextProvider } from "./components/GlobalContext";
 
 const { Header, Sider } = Layout;
