@@ -7,10 +7,6 @@ import { withRouter } from "react-router-dom";
 import { HomeOutlined, TeamOutlined, SearchOutlined, BarChartOutlined, DesktopOutlined } from "@ant-design/icons";
 
 class SideMenu extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   render() {
     const { location } = this.props;
     return (
