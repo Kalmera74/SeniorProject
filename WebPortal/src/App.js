@@ -115,15 +115,20 @@ const routes = [
     main: () => <HomePage />
   },
   {
+    path: "/login",
+    title: () => "Login",
+    main: () => <LoginPage />
+  },
+  {
     title: () => "404 Not Found",
     main: () => <NotFoundPage />
   }
 ];
 
 class App extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+  }
 
   static contextType = GlobalContext;
 
