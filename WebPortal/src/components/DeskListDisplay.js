@@ -1,10 +1,8 @@
 import React from "react";
 import DeskTable from "./DeskTable";
 import ObservationDrawer from "./ObservationDrawer";
-import { Layout, Pagination, Row, Col, Result } from "antd";
+import { Result } from "antd";
 import { GlobalContext } from "../components/GlobalContext";
-
-const { Content } = Layout;
 
 class DesksListDisplay extends React.Component {
   constructor(props) {
@@ -33,30 +31,7 @@ class DesksListDisplay extends React.Component {
     let layout;
 
     if (this.context.viewInCard) {
-      let startIdx = this.state.page * this.state.itemPerPage;
-
-      let pagination = (
-        <Pagination
-          style={{ textAlign: "center" }}
-          disabled={this.props.loading}
-          defaultCurrent={1}
-          defaultPageSize={this.state.itemPerPage}
-          current={this.state.page + 1}
-          total={users && users.length > 1 ? users.length : 0}
-          onChange={page => {
-            this.setState({
-              page: page - 1
-            });
-          }}
-        />
-      );
-
-      let keyCounter = 0;
-
       // -------------------- card view
-      let cardListItems = users
-
-      
     } else {
       // ---------------------------- Table view
       const tableLayout = (
