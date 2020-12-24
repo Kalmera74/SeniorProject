@@ -1,7 +1,6 @@
 let userListDemo = require("./patientDemoData.json");
 let observationDemo = require("./observationDemoData.json");
 
-//const SERVER_URL = "http://34.71.187.226:5000/api/v0.1.0";
 const SERVER_URL = "https://senior.fastntech.com/api/users";
 const LOGIN_URL = "https://senior.fastntech.com/api/auth/systemLogin";
 

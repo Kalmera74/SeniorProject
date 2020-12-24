@@ -89,14 +89,6 @@ class UserTable extends Component {
         width: 150,
         sorter: (a, b) => a.phone.localeCompare(b.phone)
       },
-      // {
-      //   title: "Gender",
-      //   dataIndex: "gender",
-      //   key: "gender",
-      //   ellipsis: true,
-      //   width: 100,
-      //   sorter: (a, b) => a.gender.localeCompare(b.gender)
-      // },
       {
         title: "Date Last Used",
         dataIndex: "birthDate",
@@ -105,14 +97,6 @@ class UserTable extends Component {
         width: 150,
         sorter: (a, b) => a.birthDate.localeCompare(b.birthDate)
       },
-      // {
-      //   title: "Age",
-      //   dataIndex: "age",
-      //   key: "age",
-      //   ellipsis: true,
-      //   width: 100,
-      //   sorter: (a, b) => a.age - b.age
-      // },
       {
         title: "Manage",
         dataIndex: "raw",

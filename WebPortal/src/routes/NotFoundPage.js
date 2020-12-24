@@ -13,14 +13,14 @@ const NotFoundPage = props => {
   //add special redirect rule for gh pages
   if (
     location.hash === "" &&
-    (location.pathname === "/GOSH-FHIRworks2020-React-Dashboard" ||
-      location.pathname === "/GOSH-FHIRworks2020-React-Dashboard/")
+    (location.pathname === "/https://senior.fastntech.com/api" ||
+      location.pathname === "https://senior.fastntech.com/api")
   ) {
     return <Redirect to="/" />;
   }
 
   const returnHome = () => {
-    history.push("/");
+    history.push("/home");
   };
 
   return (

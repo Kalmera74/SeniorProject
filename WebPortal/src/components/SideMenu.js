@@ -46,10 +46,6 @@ class SideMenu extends React.Component {
           <span>Desks</span>
           <NavLink to="/desks" />
         </Menu.Item>
-        {/* <Menu.Item key="/login">
-          <span>Login</span>
-          <NavLink to="/login" />
-        </Menu.Item> */}
       </Menu>
     );
   }

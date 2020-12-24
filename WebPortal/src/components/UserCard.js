@@ -32,11 +32,8 @@ class UserCard extends Component {
       >
         {userData && (
           <div>
-            {/* <p>{userData.maritalStatus.text + ", " + userData.gender}</p> */}
             <p>{userData.id}</p>
             <p>{userData.birthDate}</p>
-            {/* <p>{userData.telecom.value}</p> */}
-            
             <p>{userData.phone}</p>
           </div>
         )}
