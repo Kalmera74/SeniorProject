@@ -12,17 +12,17 @@ import HomePage from "./routes/home";
 import SideMenu from "./components/SideMenu";
 import MobileTabBar from "./components/MobileTabBar";
 
-
 import logo from "./img/dashboard-logo.png";
-//import icon from "./img/dashboard-logo.png";
 import profile from "./img/icon_user.png";
 
 import { CaretDownOutlined, UnorderedListOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { BrowserRouter as Router, Switch, Route, Link, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useLocation, Link } from "react-router-dom";
 import { Layout, Avatar, Popconfirm, Radio, Tooltip, Modal, message } from "antd";
 import GlobalContextConsumer from "./components/GlobalContext";
 import { GlobalContext, GlobalContextProvider } from "./components/GlobalContext";
+
+import getUsers from "./javascript/api";
 
 const { Header, Sider } = Layout;
 
@@ -41,6 +41,7 @@ class DesktopMenu extends React.Component {
     message.config({
       top: 80
     });
+    getUsers();
   }
 
   render() {
@@ -59,14 +60,12 @@ class DesktopMenu extends React.Component {
           left: 0
         }}
       >
-        <Link to="/">
           <div
             className="logo"
             style={{
               background: `url("${this.state.collapsed ? logo : logo}") no-repeat`
             }}
           ></div>
-        </Link>
         <SideMenu></SideMenu>
         <div style={{ flexGrow: 1 }}></div>
       </Sider>
@@ -78,8 +77,8 @@ const routes = [
   {
     path: "/",
     exact: true,
-    title: () => "Web Portal",
-    main: () => <HomePage />
+    title: () => "Login",
+    main: () => <LoginPage />
   },
   {
     path: "/users",
@@ -125,6 +124,8 @@ const routes = [
 class App extends React.Component {
   constructor(props) {
     super(props);
+    // login state
+    this.state = {isLoggedIn: false};
   }
 
   static contextType = GlobalContext;
@@ -137,8 +138,7 @@ class App extends React.Component {
 
   confirmLogout = () => {
     Modal.success({
-      title: "You have successfully logged out",
-      content: "You will be logged out of a real system, but not in this demo prototype."
+      title: "You have successfully logged out"
     });
   };
 
@@ -146,79 +146,85 @@ class App extends React.Component {
     console.log(this.props);
     console.log(window.location.hostname);
 
-    const basename =
-      window.location.hostname;
+    const basename = window.location.hostname;
+
+    const isLoggedIn = this.state.isLoggedIn;
 
     return (
-      <Router basename={basename}>
-        <Layout style={{ minHeight: 100 + "vh" }}>
-          <GlobalContextConsumer>
-            {value => {
-              if (!value.isMobile) {
-                return <DesktopMenu></DesktopMenu>;
-              } else {
-                return <MobileTabBar></MobileTabBar>;
-              }
-            }}
-          </GlobalContextConsumer>
+      <div>
+        { isLoggedIn
+          ? <Router basename={basename}>
+          <Layout style={{ minHeight: 100 + "vh" }}>
+            <GlobalContextConsumer>
+              {value => {
+                if (!value.isMobile) {
+                  return <DesktopMenu></DesktopMenu>;
+                } else {
+                  return <MobileTabBar></MobileTabBar>;
+                }
+              }}
+            </GlobalContextConsumer>
 
-          <Layout className="site-layout">
-            <Header className="site-layout-header">
-              <h2 style={{ paddingLeft: 20 + "px" }}>
-                <Switch>
-                  {routes.map((route, index) => (
-                    <Route
-                      key={index}
-                      path={route.path}
-                      exact={route.exact}
-                      children={<route.title />}
-                    />
-                  ))}
-                </Switch>
-              </h2>
+            <Layout className="site-layout">
+              <Header className="site-layout-header">
+                <h2 style={{ paddingLeft: 20 + "px" }}>
+                  <Switch>
+                    {routes.map((route, index) => (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                        children={<route.title />}
+                      />
+                    ))}
+                  </Switch>
+                </h2>
 
-              <div style={{ flexGrow: 1, textAlign: "right", paddingRight: "20px" }}>
-                <GlobalContextProvider>
-                  <Radio.Group
-                    defaultValue="table"
-                    onChange={e => {
-                      console.log(e);
-                      this.handleViewChange(e.target.value);
-                    }}
-                    size="small"
+                <div style={{ flexGrow: 1, textAlign: "right", paddingRight: "20px" }}>
+                  <GlobalContextProvider>
+                    <Radio.Group
+                      defaultValue="table"
+                      onChange={e => {
+                        console.log(e);
+                        this.handleViewChange(e.target.value);
+                      }}
+                      size="small"
+                    >
+                      <Radio.Button value="table">
+                        <Tooltip placement="bottom" title="View users in a table">
+                          <UnorderedListOutlined />
+                        </Tooltip>
+                      </Radio.Button>
+                      <Radio.Button value="card">
+                        <Tooltip placement="bottom" title="View users in cards">
+                          <AppstoreOutlined />
+                        </Tooltip>
+                      </Radio.Button>
+                    </Radio.Group>
+                  </GlobalContextProvider>
+                  <Popconfirm
+                    placement="bottomRight"
+                    title="Would you like to logout of the system?"
+                    onConfirm={this.confirmLogout}
+                    okText="Logout"
+                    cancelText="Cancel"
                   >
-                    <Radio.Button value="table">
-                      <Tooltip placement="bottom" title="View users in a table">
-                        <UnorderedListOutlined />
-                      </Tooltip>
-                    </Radio.Button>
-                    <Radio.Button value="card">
-                      <Tooltip placement="bottom" title="View users in cards">
-                        <AppstoreOutlined />
-                      </Tooltip>
-                    </Radio.Button>
-                  </Radio.Group>
-                </GlobalContextProvider>
-                <Popconfirm
-                  placement="bottomRight"
-                  title="Would you like to logout of the system?"
-                  onConfirm={this.confirmLogout}
-                  okText="Logout"
-                  cancelText="Cancel"
-                >
-                  <Avatar
-                    src={profile}
-                    style={{ marginLeft: "20px", marginRight: !this.context.isMobile && "5px" }}
-                  />
-                  {!this.context.isMobile && <CaretDownOutlined />}
-                </Popconfirm>
-              </div>
-            </Header>
+                    <Avatar
+                      src={profile}
+                      style={{ marginLeft: "20px", marginRight: !this.context.isMobile && "5px" }}
+                    />
+                    {!this.context.isMobile && <CaretDownOutlined />}
+                  </Popconfirm>
+                </div>
+              </Header>
 
-            <RouterContent></RouterContent>
+              <RouterContent></RouterContent>
+            </Layout>
           </Layout>
-        </Layout>
-      </Router>
+        </Router>
+        : <LoginPage></LoginPage>
+        }
+      </div>
     );
   }
 }
@@ -244,6 +250,7 @@ const RouterContent = () => {
             />
           ))}
         </Switch>
+        
       </CSSTransition>
     </TransitionGroup>
   );

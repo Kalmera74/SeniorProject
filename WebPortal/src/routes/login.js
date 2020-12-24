@@ -2,6 +2,8 @@ import React from "react";
 import "./login.css"
 import Header from "../components/Header";
 
+import login from "../javascript/api";
+
 class LoginPage extends React.Component {
     render() {
         return (
@@ -21,7 +23,7 @@ class LoginPage extends React.Component {
                         </div>
                     </div>
                     <div className="footer">
-                        <button type="button" className="btn">Login</button>
+                        <button type="button" className="btn" onClick={login()}>Login</button>
                     </div>
                 </div>
             </div>

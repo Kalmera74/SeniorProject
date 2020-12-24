@@ -1,10 +1,45 @@
 let userListDemo = require("./patientDemoData.json");
 let observationDemo = require("./observationDemoData.json");
 
-const SERVER_URL = "https://henryz.cc:5001/api/";
 //const SERVER_URL = "http://34.71.187.226:5000/api/v0.1.0";
+const SERVER_URL = "https://senior.fastntech.com/api/users";
+const LOGIN_URL = "https://senior.fastntech.com/api/auth/systemLogin";
 
 const moment = require("moment");
+
+export function login(credentials) {
+  console.log("Login test");
+    fetch(LOGIN_URL, {method:"POST", body:JSON.stringify(credentials)})
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          console.log("failed");
+        }
+      )
+}
+
+export default function getUsers() {
+  console.log("getUserTest");
+    fetch(SERVER_URL)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          console.log("failed");
+        }
+      )
+}
 
 const getUserDemo = () => {
   return combineUsersBundle(userListDemo);
@@ -122,5 +157,6 @@ export {
   getUserDemo,
   getObservationDemo,
   parseAllUserData,
-  getUserList
+  getUserList,
+  getUsers
 };
