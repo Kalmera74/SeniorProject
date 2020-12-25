@@ -1,12 +1,14 @@
 import React from "react";
 import "./login.css"
 import Header from "../components/Header";
+import { Form, Button } from "antd";
 
 import login from "../javascript/api";
 
 class LoginPage extends React.Component {
     render() {
         return (
+            <Form>
             <div>
                 <Header title="Login"></Header>
                 <div className="base-container">
@@ -23,10 +25,11 @@ class LoginPage extends React.Component {
                         </div>
                     </div>
                     <div className="footer">
-                        <button type="button" className="btn" onClick={login()}>Login</button>
+                        <Button type="primary" htmlType="submit"  onClick={() => {}}>Login</Button>
                     </div>
                 </div>
             </div>
+            </Form>
         );
     }
 }

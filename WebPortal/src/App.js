@@ -111,11 +111,6 @@ const routes = [
     main: () => <HomePage />
   },
   {
-    path: "/login",
-    title: () => "Login",
-    main: () => <LoginPage />
-  },
-  {
     title: () => "404 Not Found",
     main: () => <NotFoundPage />
   }
@@ -125,7 +120,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     // login state
-    this.state = {isLoggedIn: true};
+    this.state = {isLoggedIn: false};
   }
 
   static contextType = GlobalContext;

@@ -6,21 +6,42 @@ const LOGIN_URL = "https://senior.fastntech.com/api/auth/systemLogin";
 
 const moment = require("moment");
 
-export function login(credentials) {
+
+
+export function login() {
   console.log("Login test");
-    fetch(LOGIN_URL, {method:"POST", body:JSON.stringify(credentials)})
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          console.log("failed");
-        }
-      )
+  const token = Buffer.from(`portaluser:5555`, 'utf8').toString('base64');
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer portaluser:5555'
+    },
+    body: JSON.stringify({ title: 'React POST Request Example' })
+  };
+
+  fetch(LOGIN_URL, requestOptions)
+        .then(response => response.json())
+        .then((result) => console.log(result));
+
+    // fetch(LOGIN_URL, {method:"POST",
+    // headers: new Headers({
+    //   'Authorization': `Basic ${token}`, 
+    //   'Content-Type': 'application/x-www-form-urlencoded'
+    // }), body:JSON.stringify()})
+    //   .then(res => res.json())
+    //   .then(
+    //     (result) => {
+    //       console.log(result);
+    //     },
+    //     // Note: it's important to handle errors here
+    //     // instead of a catch() block so that we don't swallow
+    //     // exceptions from actual bugs in components.
+    //     (error) => {
+    //       console.log("failed");
+    //     }
+    //   )
 }
 
 export default function getUsers() {
