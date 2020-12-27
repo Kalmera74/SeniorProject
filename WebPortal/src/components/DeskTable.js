@@ -75,7 +75,7 @@ class DeskTable extends Component {
         fixed: ""
       },
       {
-        title: "Remove",
+        title: "Manage",
         dataIndex: "raw",
         key: "raw",
         width: 120,
