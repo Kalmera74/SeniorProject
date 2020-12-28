@@ -22,7 +22,7 @@ import { Layout, Avatar, Popconfirm, Radio, Tooltip, Modal, message } from "antd
 import GlobalContextConsumer from "./components/GlobalContext";
 import { GlobalContext, GlobalContextProvider } from "./components/GlobalContext";
 
-import getUsers from "./javascript/api";
+import { getUsers, login } from "./javascript/api";
 
 const { Header, Sider } = Layout;
 
@@ -41,7 +41,8 @@ class DesktopMenu extends React.Component {
     message.config({
       top: 80
     });
-    getUsers();
+    login();
+    //getUsers();
   }
 
   render() {
@@ -77,8 +78,8 @@ const routes = [
   {
     path: "/",
     exact: true,
-    title: () => "Login",
-    main: () => <LoginPage />
+    title: () => "Home",
+    main: () => <HomePage />
   },
   {
     path: "/users",
@@ -106,9 +107,9 @@ const routes = [
     main: () => <DesksPage />
   },
   {
-    path: "/home",
-    title: () => "Home",
-    main: () => <HomePage />
+    path: "/login",
+    title: () => "Login",
+    main: () => <LoginPage />
   },
   {
     title: () => "404 Not Found",
@@ -120,7 +121,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     // login state
-    this.state = {isLoggedIn: true};
+    // this.state = {isLoggedIn: true};
   }
 
   static contextType = GlobalContext;
@@ -143,12 +144,12 @@ class App extends React.Component {
 
     const basename = window.location.hostname;
 
-    const isLoggedIn = this.state.isLoggedIn;
+    // const isLoggedIn = this.state.isLoggedIn;
 
     return (
       <div>
-        { isLoggedIn
-          ? <Router basename={basename}>
+        {/* { isLoggedIn ? */}
+         <Router basename={basename}>
           <Layout style={{ minHeight: 100 + "vh" }}>
             <GlobalContextConsumer>
               {value => {
@@ -214,11 +215,12 @@ class App extends React.Component {
               </Header>
 
               <RouterContent></RouterContent>
+
             </Layout>
           </Layout>
         </Router>
-        : <LoginPage></LoginPage>
-        }
+        {/* : <LoginPage></LoginPage>
+        } */}
       </div>
     );
   }

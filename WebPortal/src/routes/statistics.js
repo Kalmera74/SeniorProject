@@ -136,12 +136,13 @@ class StatisticsPage extends React.Component {
         {
           data: Object.values(occ),
           backgroundColor: bgColors,
-          hoverBackgroundColor: bgColorsHover
+          hoverBackgroundColor: bgColorsHover,
+          label: "Number of People"
         }
       ]
     };
     console.log(occ);
-    return <Pie data={data} />;
+    return <Bar data={data} />;
   };
 
   AgeChart = () => {
@@ -208,25 +209,26 @@ class StatisticsPage extends React.Component {
             <Row className="statPadding">
               {/* <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard children={this.GenderChart()} title="Gender"></DisplayCard>
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard children={this.AgeChart()} title="Age Groups"></DisplayCard>
               </Col> */}
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard children={this.MonthChart()} title="Weekly Statistics"></DisplayCard>
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard
-                  children={this.StatusChart()}
-                  title="Rejected Desks"
-                ></DisplayCard>
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                <DisplayCard children={this.MonthChart()} title="Montly Statistics"></DisplayCard>
+                <DisplayCard children={this.AgeChart()} title="Age Groups"></DisplayCard>
               </Col>
               <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                 <DisplayCard children={this.CityChart()} title="Desks' Occupancy"></DisplayCard>
               </Col>
+              <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                <DisplayCard children={this.LanguageChart()} title="Weekly Statistics"></DisplayCard>
+              </Col>
+              {/* <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                <DisplayCard
+                  children={this.StatusChart()}
+                  title="Rejected Desks"
+                ></DisplayCard>
+              </Col> */}
+              <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                <DisplayCard children={this.MonthChart()} title="Montly Statistics"></DisplayCard>
+              </Col>
+              
             </Row>
           </div>
         ) : (

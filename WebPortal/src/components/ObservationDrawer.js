@@ -81,7 +81,7 @@ class ObservationDrawer extends React.Component {
           <div key={keyGen()}>
             <Descriptions title="User Basic Info">
               <Descriptions.Item key={keyGen()} label="Name">
-                {`${user.name[0]?.family} ${user.name[0]?.given?.[0]} (${user.name[0]?.prefix?.[0]})`}
+                {`${user.name[0]?.family} ${user.name[0]?.given?.[0]}`}
               </Descriptions.Item>
               <Descriptions.Item key={keyGen()} label="ID">
                 {user.id}
@@ -93,10 +93,10 @@ class ObservationDrawer extends React.Component {
                 {user.birthDate}
               </Descriptions.Item>
               <Descriptions.Item key={keyGen()} label="Last Use">
-                {`${user.address[0].line[0]}, ${user.address[0].city}, ${user.address[0].state}, ${user.address[0].country}`}
+                {`${user.address[0].line[0]}`}
               </Descriptions.Item>
               <Descriptions.Item key={keyGen()} label="Average Time Spent">
-                {`${user.address[0].line[0]}, ${user.address[0].city}, ${user.address[0].state}, ${user.address[0].country}`}
+                {`${user.address[0].city}`}
               </Descriptions.Item>
             </Descriptions>
           </div>

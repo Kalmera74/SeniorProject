@@ -12,36 +12,36 @@ export function login() {
   console.log("Login test");
   const token = Buffer.from(`portaluser:5555`, 'utf8').toString('base64');
 
-  const requestOptions = {
-    method: 'POST',
-    headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer portaluser:5555'
-    },
-    body: JSON.stringify({ title: 'React POST Request Example' })
-  };
+  // const requestOptions = {
+  //   method: 'POST',
+  //   headers: { 
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer portaluser:5555'
+  //   },
+  //   body: JSON.stringify({ title: 'React POST Request Example' })
+  // };
 
-  fetch(LOGIN_URL, requestOptions)
-        .then(response => response.json())
-        .then((result) => console.log(result));
+  // fetch(LOGIN_URL, requestOptions)
+  //       .then(response => response.json())
+  //       .then((result) => console.log(result));
 
-    // fetch(LOGIN_URL, {method:"POST",
-    // headers: new Headers({
-    //   'Authorization': `Basic ${token}`, 
-    //   'Content-Type': 'application/x-www-form-urlencoded'
-    // }), body:JSON.stringify()})
-    //   .then(res => res.json())
-    //   .then(
-    //     (result) => {
-    //       console.log(result);
-    //     },
-    //     // Note: it's important to handle errors here
-    //     // instead of a catch() block so that we don't swallow
-    //     // exceptions from actual bugs in components.
-    //     (error) => {
-    //       console.log("failed");
-    //     }
-    //   )
+    fetch(LOGIN_URL, {method:"POST",
+    headers: new Headers({
+      'Authorization': `Basic ${token}`, 
+      'Content-Type': 'application/json'
+    }), body:JSON.stringify()})
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          console.log("failed");
+        }
+      )
 }
 
 export default function getUsers() {
