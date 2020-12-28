@@ -3,6 +3,7 @@ import UsersListDisplay from "../components/UsersListDisplay";
 import { getUserList } from "../javascript/api";
 import Header from "../components/Header";
 import Overlay from "../components/Overlay";
+import FormDialog from "../components/FormDialog";
 import { message, Button } from "antd";
 
 const moment = require("moment");
@@ -40,9 +41,7 @@ class PortalUsersPage extends React.Component {
       <div>
         <Overlay show={this.state.awaitingData}></Overlay>
         {!this.props.filter && <Header title="Portal Users List"></Header>}
-        <Button style={{ margin: 10, marginTop: -10 }} type="primary" htmlType="submit">
-            Add User
-          </Button>
+          <FormDialog></FormDialog>
         <UsersListDisplay users={userData} loading={this.state.awaitingData} />
       </div>
     );
