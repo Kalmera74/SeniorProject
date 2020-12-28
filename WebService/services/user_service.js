@@ -75,7 +75,7 @@ const createRefLink = (req, res) => {
 };
 
 
-/* no need right now if 2 admin needs to login or change portal to user
+/* no need right now if 2 admin needs to login or change portal to user to admin user
     Set priority the user 
     
     0 => User
