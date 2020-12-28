@@ -90,7 +90,7 @@ class UserTable extends Component {
         sorter: (a, b) => a.phone.localeCompare(b.phone)
       },
       {
-        title: "Date Last Used",
+        title: "Birth Date",
         dataIndex: "birthDate",
         key: "birthDate",
         ellipsis: true,
