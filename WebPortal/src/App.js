@@ -121,7 +121,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     // login state
-    // this.state = {isLoggedIn: true};
+    this.state = {isLoggedIn: true};
   }
 
   static contextType = GlobalContext;
@@ -144,11 +144,11 @@ class App extends React.Component {
 
     const basename = window.location.hostname;
 
-    // const isLoggedIn = this.state.isLoggedIn;
+    const isLoggedIn = this.state.isLoggedIn;
 
     return (
       <div>
-        {/* { isLoggedIn ? */}
+        { isLoggedIn ?
          <Router basename={basename}>
           <Layout style={{ minHeight: 100 + "vh" }}>
             <GlobalContextConsumer>
@@ -219,8 +219,8 @@ class App extends React.Component {
             </Layout>
           </Layout>
         </Router>
-        {/* : <LoginPage></LoginPage>
-        } */}
+        : <LoginPage></LoginPage>
+        }
       </div>
     );
   }

@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import "./login.css"
 import Header from "../components/Header";
-import { Redirect } from "react-router-dom";
 
 import login from "../javascript/api";
 
 class LoginPage extends React.Component {
+
     render() {
         return (
             <form>
@@ -25,7 +25,7 @@ class LoginPage extends React.Component {
                         </div>
                     </div>
                     <div className="footer">
-                        <button type="submit" className="btn">Login</button>
+                        <button type="submit" className="btn" >Login</button>
                     </div>
                 </div>
             </div>
