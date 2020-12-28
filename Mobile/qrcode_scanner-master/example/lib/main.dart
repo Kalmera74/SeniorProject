@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'dart:typed_data';
 
@@ -11,13 +13,26 @@ import 'package:http/http.dart' as http;
 import 'package:qrscan_example/occupancy_chart.dart';
 import 'package:qrscan_example/subscriber_series.dart';
 import 'package:qrscan_example/Screens/QueueScreen.dart';
+import 'package:qrscan_example/Screens/LoginScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-final String geturl = 'http://34.71.187.226:5000/api/v0.1.0/queue/stats/time';
-final String getQuePoint = 'http://34.71.187.226:5000/api/v0.1.0/queue/';
+final String geturl =
+    'https://senior.fastntech.com:443/api/mobile/queue/allOccupancy';
+final String getQRCheck = 'https://senior.fastntech.com:443/api/mobile/qr';
+final String enterQueueURL =
+    'https://senior.fastntech.com:443/api/mobile/queue/';
+
+// final Map<String, String> tokenData = {
+//   'authentication': '',
+// };
 
 //Get Occupancy Data
 Future getOccuData() async {
-  final res = await http.get(geturl);
+  final prefs = await SharedPreferences.getInstance();
+  print(prefs.getString('token'));
+  final res = await http.get(geturl, headers: <String, String>{
+    'authentication': prefs.getString('token'),
+  });
   if (res.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -25,8 +40,8 @@ Future getOccuData() async {
     Map<String, dynamic> user = jsonDecode(res.body.toString());
     user.forEach((key, value) {
       listA.add(SubscriberSeries(
-        dayName: key,
-        occupancyRate: value,
+        deskCount: key,
+        avgUser: value,
       ));
     });
 
@@ -38,18 +53,27 @@ Future getOccuData() async {
   }
 }
 
+//Enter queue
 Future getQue(String str) async {
-  final res = await http.post(getQuePoint + str);
-  if (res.statusCode == 201) {
+  final prefs = await SharedPreferences.getInstance();
+  // tokenData.update('authentication', (value) => prefs.getString('token'));
+  final res = await http.post(getQRCheck + '/' + str, headers: <String, String>{
+    'authentication': prefs.getString('token'),
+  });
+  if (res.statusCode == 200 || res.statusCode == 401) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
 
-    Map<String, dynamic> user = jsonDecode(res.body.toString());
-    //2. sayfaya geç
-    qNum = str;
-    // getQueStatFunc(str);
-
-    await Get.to(SubPage());
+    var response = await http.post(enterQueueURL, headers: <String, String>{
+      'authentication': prefs.getString('token'),
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      Map<String, dynamic> user = jsonDecode(response.body.toString());
+      print(user['id']);
+      print(user['user_id']);
+      qNum = user['id'];
+      await Get.toNamed('/third');
+    }
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -58,6 +82,9 @@ Future getQue(String str) async {
 }
 
 class MyApp extends StatefulWidget {
+  final Data data;
+  MyApp({this.data});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -162,5 +189,3 @@ class _MyAppState extends State<MyApp> {
     }
   }
 }
-
-void main() => runApp(GetMaterialApp(home: MyApp()));
