@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node  app.js --env dev",
+    "start": "babel-node app.js --env dev",
     "migrate": "babel-node  app.js -m --env dev",
     "migrate:seed": "babel-node  app.js -m -s --env dev",
     "dev": "nodemon --exec babel-node app.js --env dev",
@@ -14,6 +14,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/node": "^7.10.4",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
     "@babel/preset-env": "^7.11.5",
@@ -25,13 +27,10 @@
     "cors": "^2.8.5",
     "crypto-random-string": "^3.3.0",
     "express": "^4.17.1",
-    "g": "^2.0.1",
-    "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.1",
     "moment": "^2.25.3",
     "morgan": "^1.10.0",
-    "node-babel": "^0.1.2",
     "node-pre-gyp": "^0.14.0",
     "nodemailer": "^6.4.16",
     "pg": "^8.5.0",
@@ -42,8 +41,8 @@
     "uuid": "^8.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/node": "^7.12.6",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
     "jest": "^26.0.1",
     "jest-expect-message": "^1.0.2",
     "jest-extended": "^0.11.5",

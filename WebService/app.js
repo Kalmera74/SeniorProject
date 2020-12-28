@@ -1,4 +1,4 @@
-import server from './server';
+import server from './server.js';
 import {program} from 'commander';
 
 //program details
