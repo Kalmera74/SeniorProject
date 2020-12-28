@@ -5,9 +5,9 @@ const knexConnector = require('knex')({
     client: 'pg',
     connection: {
         host : "127.0.0.1",
-        user : "postgres",
-        password : "159753",
-        database : "api",
+        user : "me",
+        password : "databasepostgrepass589",
+        database : "projectdb",
         charset: 'utf8'
 
     },
