@@ -1,7 +1,3 @@
-// For https support
-const https = require('https');
-const fs = require('fs');
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
@@ -44,19 +40,12 @@ app.use(apiPath +'mobile', authMiddleware, mobileMiddleware, userRoutes);
 app.use(apiPath +'portal', authMiddleware, portalMiddleware, portalRoutes);
 app.use(apiPath, authMiddleware, adminMiddleware, adminRoutes);
 
-
-const httpsServer = https.createServer({
-  key: fs.readFileSync('/etc/letsencrypt/live/senior.fastntech.com/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/senior.fastntech.com/fullchain.pem'),
-}, app);
-
-
 const connect = (port) => {
-    port = port || 443;
+    port = port || 5000;
 
-    httpsServer.listen(port, () => {
+    app.listen(port, () => {
         // qr_code_service.generateQR().then(qr_code_service.sendQR);
-        console.info('Running on https://senior.fastntech.com:%s', port);
+        console.info('Running on http://localhost:%s', port);
     });
 };
 
