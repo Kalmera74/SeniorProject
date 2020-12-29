@@ -8,11 +8,24 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:qrscan_example/Screens/QueueScreen.dart';
+import 'package:qrscan_example/UI/ProgressHUD.dart';
+import 'package:qrscan_example/api/api_service.dart';
+import 'package:qrscan_example/main.dart';
 import 'package:qrscan_example/model/login_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class Data {
+  String key;
+  String token;
+
+  Data({@required this.key, @required this.token});
+}
 
 /// This is the main application widget.
-class MyApp2 extends StatelessWidget {
+class LoginPage extends StatelessWidget {
   static const String _title = 'Login Page';
 
   @override
@@ -39,15 +52,83 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   LoginRequestModel requestModel;
+  bool isApiCallProcess = false;
+  bool isLoggedIn = false;
+  String savedToken = '';
+  TextEditingController tokenController = TextEditingController();
+  TextEditingController tcController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String userTC = '';
+  String passwd = '';
 
   @override
   void initState() {
     super.initState();
-    requestModel = new LoginRequestModel();
+    requestModel = LoginRequestModel();
+    autoLogIn();
+    autoGetToken();
+  }
+
+  void autoGetToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String tokenSave = prefs.getString('token');
+    if (tokenSave != null) {
+      setState(() {
+        savedToken = tokenSave;
+      });
+    }
+    return;
+  }
+
+  Future<int> getToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', token);
+    setState(() {
+      savedToken = token;
+      isLoggedIn = true;
+    });
+    // tokenController.clear();
+    return 0;
+  }
+
+  void autoLogIn() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String tckn = prefs.getString('TCKN');
+    final String password = prefs.getString('Password');
+
+    if (tckn != null) {
+      setState(() {
+        isLoggedIn = true;
+        userTC = tckn;
+        passwd = password;
+      });
+    }
+  }
+
+  Future<Null> loginUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('TCKN', tcController.text);
+    prefs.setString('Password', passwordController.text);
+    setState(() {
+      userTC = tcController.text;
+      passwd = passwordController.text;
+      isLoggedIn = true;
+    });
+    tcController.clear();
+    passwordController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
+    return ProgressHUD(
+      child: _uiSetup(context),
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
+    );
+  }
+
+  @override
+  Widget _uiSetup(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -59,6 +140,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onSaved: (input) => requestModel.nationID = input,
+            controller: tcController,
             decoration: const InputDecoration(
               icon: Icon(Icons.person),
               hintText: 'Enter your TCKN',
@@ -74,6 +156,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             obscureText: true,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onSaved: (input) => requestModel.password = input,
+            controller: passwordController,
             decoration: const InputDecoration(
               icon: Icon(Icons.lock),
               hintText: 'Enter your password',
@@ -94,6 +177,34 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   // the form is invalid.
                   if (validateAndSave()) {
                     print(requestModel.toJson());
+                    setState(() {
+                      isApiCallProcess = true;
+                    });
+                    APIService apiService = new APIService();
+                    apiService.login(requestModel).then((value) {
+                      setState(() {
+                        isApiCallProcess = false;
+                      });
+                      if (value.token.isNotEmpty) {
+                        tokenController.text = value.token.toString();
+
+                        final tokenData = Data(
+                            key: 'authentication', token: tokenController.text);
+                        final Map<String, String> tokenData2 = {
+                          'authentication': tokenController.text,
+                        };
+                        print(tokenController.text);
+                        if (!isLoggedIn) {
+                          loginUser();
+                        }
+                        getToken(value.token);
+                        Get.toNamed('/second');
+                      } else {
+                        final snackBar = SnackBar(
+                          content: Text(value.error),
+                        );
+                      }
+                    });
                   }
                 },
                 child: Text('Login'),
@@ -115,4 +226,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 }
 
-void main() => runApp(MyApp2());
+void main() {
+  runApp(GetMaterialApp(
+    initialRoute: '/',
+    getPages: [
+      GetPage(name: '/', page: () => LoginPage()),
+      GetPage(name: '/second', page: () => MyApp()),
+      GetPage(name: '/third', page: () => SubPage()),
+    ],
+  ));
+}

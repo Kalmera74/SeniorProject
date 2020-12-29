@@ -11,10 +11,10 @@ class OccupancyChart extends StatelessWidget {
   Widget build(BuildContext context) {
     List<charts.Series<SubscriberSeries, String>> series = [
       charts.Series(
-          id: "Occupancy",
+          id: 'Occupancy',
           data: data,
-          domainFn: (SubscriberSeries series, _) => series.dayName,
-          measureFn: (SubscriberSeries series, _) => series.occupancyRate)
+          domainFn: (SubscriberSeries series, _) => series.deskCount,
+          measureFn: (SubscriberSeries series, _) => series.avgUser)
     ];
 
     return Container(

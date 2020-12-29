@@ -3,9 +3,12 @@ import QrCode from '../models/qrCode';
 // Requirements
 import express from 'express';
 // Utils
-import {errorResp, successResp} from '../util/http_util';
+import { errorResp, successResp } from '../util/http_util';
+
+import request from 'request';
 
 import moment from 'moment';
+import { async } from 'crypto-random-string';
 let qnum = 0;
 
 //Create Number for QR
@@ -21,6 +24,7 @@ const generateQR = (req, res) => {
         .save()
         .then((savedQR) => {
             successResp(res, savedQR, 201);
+
         })
         .catch((err) => {
             errorResp(res, err);
@@ -30,25 +34,45 @@ const generateQR = (req, res) => {
 // Use QR change activity
 
 const useQR = (req, res) => {
-    const {code} = req.params;
+    const { code } = req.params;
 
-    QrCode.where({code, isActive: true})
+    QrCode.where({ code, isActive: true })
         .save(
             {
                 isActive: false,
                 used_at: moment().format('YYYY-MM-DD HH:mm:ss'),
             },
-            {method: 'update'}
+            { method: 'update' }
         )
         .then(() => {
             successResp(res, true);
+            sendQR(code)
         })
         .catch((err) => {
             errorResp(res, err);
         });
 };
 
+async function sendQR(qr) {
+
+    const apiURL = "http://168.119.190.83";
+    console.log(qr);
+    if (!apiURL) {
+        console.error('API URL was not set')
+        return;
+    }
+    request.post(
+        apiURL,
+        {
+            json: {
+                qnumber: qr
+            }
+        })
+}
+
 const router = express.Router();
+
+// module.exports.sendQR = sendQR;
 
 router.route('/qr/').post(generateQR);
 router.route('/qr/:code').put(useQR);

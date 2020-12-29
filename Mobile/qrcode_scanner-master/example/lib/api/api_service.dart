@@ -5,7 +5,7 @@ import 'package:qrscan_example/model/login_model.dart';
 
 class APIService {
   Future<LoginResponseModel> login(LoginRequestModel loginRequestModel) async {
-    String url = 'https://senior.fastntech.com/login';
+    String url = 'https://senior.fastntech.com:443/auth/mobileLogin';
 
     final response = await http.post(url, body: loginRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {

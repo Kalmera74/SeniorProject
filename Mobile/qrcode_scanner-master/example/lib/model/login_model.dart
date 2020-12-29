@@ -22,8 +22,8 @@ class LoginRequestModel {
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
-      'nationID': nationID,
-      'password': password,
+      'nationID': nationID.trim(),
+      'password': password.trim(),
     };
 
     return map;

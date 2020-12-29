@@ -6,13 +6,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 //Getting data from URL(Localhost for testing)
-final String getQueStat = 'http://localhost:8000/data.json/';
+final String getQueStat =
+    'https://senior.fastntech.com:443/api/mobile/queue/info/';
 
 //Local variables for testing
-String qNum = '2';
-String l = '444', k = '20';
-int _timerStart = 12;
+String qNum = ''; // bunu taşıman lazım
+String l = '', k = '';
+int _timerStart;
 
 //UserStat class
 class UserStat {
@@ -23,24 +26,24 @@ class UserStat {
   final int timeuntil;
 }
 
-final String server =
-    defaultTargetPlatform == TargetPlatform.android ? '10.0.2.2' : 'localhost';
-
-final List<UserStat> _userstat = <UserStat>[
-  UserStat(quenum: '444', linenum: '10', timeuntil: 11)
-];
+// final List<UserStat> _userstat = <UserStat>[
+//   UserStat(quenum: Get.arguments, linenum: '10', timeuntil: 11)
+// ];
 
 //Getting Queue Statictics Data
 Future getQueStatFunc(String qNum) async {
-  final res = await http.get(getQueStat + qNum);
+  final prefs = await SharedPreferences.getInstance();
+  final res = await http.get(getQueStat + qNum, headers: <String, String>{
+    'authentication': prefs.getString('token'),
+  });
   if (res.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
 
     Map<String, dynamic> user = jsonDecode(res.body);
-    l = user['quenum'].toString();
-    k = user['linenum'].toString();
-    _timerStart = user['timeuntil'];
+    l = user['avgTime'].toString();
+    k = user['frontCount'].toString();
+    _timerStart = user['waitingTime'];
     // t = user['timeuntil'].toString();
   } else {
     // If the server did not return a 200 OK response,
@@ -70,7 +73,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
       _timer = null;
     } else {
       _timer = Timer.periodic(
-        const Duration(seconds: 1),
+        const Duration(minutes: 1),
         (Timer timer) => setState(
           () {
             if (_start < 1) {
@@ -90,39 +93,11 @@ class _CountdownTimerState extends State<CountdownTimer> {
     super.dispose();
   }
 
-  // //gets the token for the cloud messaging
-  // getTokenz() async {
-  //   String token = await _firebaseMessaging.getToken();
-  //   print(token);
-  // }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     startTimer();
-
-    // _firebaseMessaging.configure(
-    //     onMessage: (Map<String, dynamic> message) async {
-    //   print("onMessage: $message");
-    //   showDialog(
-    //       context: context,
-    //       builder: (context) {
-    //         return AlertDialog(
-    //           title: Text(message['notification']['title']),
-    //           content: Text(message['notification']['body']),
-    //           actions: <Widget>[
-    //             FlatButton(
-    //               child: Text('Ok'),
-    //               onPressed: () {
-    //                 Navigator.of(context).pop();
-    //               },
-    //             )
-    //           ],
-    //         );
-    //       });
-    // });
-    // getTokenz();
   }
 
   @override
@@ -185,8 +160,8 @@ class SubPage extends StatelessWidget {
   }
 }
 
-class MyApp2 extends StatelessWidget {
-  const MyApp2({Key key}) : super(key: key);
+class QueuePage extends StatelessWidget {
+  const QueuePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -196,4 +171,4 @@ class MyApp2 extends StatelessWidget {
   }
 }
 
-void main() => runApp(MyApp2());
+void main() => runApp(QueuePage());
