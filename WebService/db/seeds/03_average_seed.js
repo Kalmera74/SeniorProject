@@ -1,5 +1,5 @@
 import Model from '../../models/averageTime';
-
+// Dummy average time data for test purpose.
 exports.seed = (knex) =>
     knex(new Model().tableName)
         .del()

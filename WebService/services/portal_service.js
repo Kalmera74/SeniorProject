@@ -6,17 +6,14 @@ import AverageTimeModel from '../models/averageTime';
 import Desk from '../models/desk';
 import DeskUserModel from '../models/deskUser';
 import UserModel from '../models/user';
-// Utils
+// Utils that determine response type
 import {errorResp, successResp} from '../util/http_util';
 
 const moment = require('moment');
 
 // Endpoints
 
-/*
-    Get the average time of all desks 15
-*/
-//query db model to get avg time 
+//This function query database to get average time of all desks.
 const getStatistics = (req, res) => {
 
     AverageTimeModel
@@ -34,10 +31,7 @@ const getStatistics = (req, res) => {
         });
 };
 
-/*
-    get the user statistics of specified user 18
-*/
-//specific users data
+//This function return specified user data with given up user's nation id.
 const getUserStatisticsByNationID = (req, res) => {
     const {nationID} = req.params;
 
@@ -65,15 +59,18 @@ const getUserStatisticsByNationID = (req, res) => {
 
 };
 
-/*
-    Get system status 30
-*/
+// This function return below data
+// 1)   User data
+// 2)   Online users
+// 3)   Finished users
+// 4)   Give up users
+// 5)   Average time of the desks
+//for the portal user to create a system report
 const getPortalStatistics = async (req, res) => {
     let data = {};
-
-        /*
-        Get all the user related data
-    */
+  
+    //Get all the user related data.
+    
    const userData = await UserModel
    .where({})
    .fetchAll()
@@ -102,9 +99,9 @@ const getPortalStatistics = async (req, res) => {
                 
         })
         data.activeUsers = data.totalUsers - data.activeUsers;
-    /*
-        Get online users count
-    */
+    
+      //Get online users count.
+    
     await DeskUserModel
         .where('is_active', 1)
         .count('id')
@@ -114,7 +111,7 @@ const getPortalStatistics = async (req, res) => {
 
             }).catch(e => console.error(e));
 
-            /* get Users that have finished there task */
+             //Get Users that have finished their task .
     await DeskUserModel
     .where('is_finished', 1)
     .count('id')
@@ -124,9 +121,9 @@ const getPortalStatistics = async (req, res) => {
         }
     ).catch(e=> console.error(e))
 
-     /*
-        Get count of given up users
-    */
+    *
+    //Get count of given up users.
+    
 
    await DeskUserModel.where({
     is_active: false,
@@ -138,14 +135,12 @@ const getPortalStatistics = async (req, res) => {
     })
     .catch(e => console.error(e));
 
-
-    /*
-            Get average times of desks
-    */
+    //Get average times of desks.
+    
     await db('desks')
         .select(['desks.id', 'name', 'time'])
         .leftJoin(
-            // Get average time for desk
+            // Get average time for desk.
             db.raw('(SELECT desk_id,  ROUND(AVG(time),0) as time FROM average_time GROUP BY desk_id) as avt'),
             'desks.id',
             'avt.desk_id'
@@ -157,7 +152,7 @@ const getPortalStatistics = async (req, res) => {
                 data.desks = result;
 
             }).catch(e => console.error(e));
-            // how many deactive desk are there
+            // Get how many deactive desk are there.
             await Desk.where('is_active', 0).count('id').then(count => {
                 data.deactiveDesk = count;
             })
@@ -167,24 +162,19 @@ const getPortalStatistics = async (req, res) => {
 
 };
 
-/*
-    Calculate average process time of desks, users in hourly, daily, weekly, monthly, yearly 25
-*/
+// This function calculates average time of desks for below time periods.
+//1)    Hourly
+//2)    Daily
+//3)    Weekly
+//4)    Monthly
+//5)    Yearly
 const calculateAverageTimes = (req, res) => {
     db('desk_user')
         .select(db.raw('desk_id, user_id, EXTRACT(EPOCH FROM (finished_at - created_at ) ) as time, created_at'))
         .where('is_finished', 1)
         .then(
             (result) => {
-                // let today = new Date().getTime();
-
-               /* let hourago = (today - (1000 * 60 * 60));
-                let yesterday = (today - (1000 * 60 * 60 * 24));
-                let weekago = (today - (1000 * 60 * 60 * 24 * 7));
-                let monthago = (today - (1000 * 60 * 60 * 24 * 30));
-
-                let yearago = (today - (1000 * 60 * 60 * 24 * 365));*/
-
+                
                 let hourago = moment().add(-1, 'hours').valueOf();
                 let yesterday = moment().add(-1, 'days').valueOf();
                 let weekago = moment().add(-1, 'weeks').valueOf();
@@ -223,12 +213,14 @@ const calculateAverageTimes = (req, res) => {
 
 
                 result.forEach(row => {
-                    // will get time when user joind queue/ came to desk
+                    
+                    //Will get time when user joined in queue
+
                     let rowTimestamp = new Date(row.created_at).getTime();
 
                     let userId = row.user_id;
                     let userTemplate;
-
+                    //Store the data for a particular user
                     userTemplate = {
                         userId: userId,
                         hourly: {
@@ -258,7 +250,7 @@ const calculateAverageTimes = (req, res) => {
                         }
                     };
 
-                        //data will store time data of all user and usertemplate store the data for a particuler user
+                        // Store time data of all user
                     if (rowTimestamp >= hourago) {
                         data.hourly.totalTime += row.time;
                         data.hourly.count += 1;
@@ -322,9 +314,7 @@ const calculateAverageTimes = (req, res) => {
 
 };
 
-/*
-    Checks the array if user exist in the array then calculates and updates the user statistics else adds the user
-*/
+//This function check if user inside the array then calculate and update user statistics else add user
 const addToUsers = (users, user) => {
     let isAdded = false;
     users.forEach((_user, index) => {

@@ -1,7 +1,7 @@
 import server from './server.js';
 import {program} from 'commander';
 
-//program details
+//Program details
 program
     .option('-m, --migrate', 'migrate database')
     .option('-s, --seed', 'insert seed data into database')
@@ -18,7 +18,7 @@ console.info(`SET ENV : ${process.env.NODE_ENV}`);
 if (program.port) {
     console.info(`SET PORT : ${program.port}`);
 }
-// creation table
+// Creation of table
 if (program.migrate) {
     const db = require('./db/');
     db.migrate.rollback().then(() => {

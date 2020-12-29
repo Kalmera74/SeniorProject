@@ -1,3 +1,5 @@
+//Email implementation for to be used to send email by admin to create new portal user
+
 const nodemailer = require('nodemailer');
 
 const Email = function({ email, message }, subject, url) {
@@ -7,6 +9,8 @@ const Email = function({ email, message }, subject, url) {
     this.subject = subject;
     this.from = `Admin`;
   }
+
+//Google service email prototype implementation
 
   Email.prototype.newTransport = () => {
         return nodemailer.createTransport({
@@ -18,6 +22,8 @@ const Email = function({ email, message }, subject, url) {
             }
         })
     }
+
+//Email operation
 
     Email.prototype.send = async function() {
         const mailOptions = {

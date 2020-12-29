@@ -5,14 +5,15 @@ import cryptoRandomString from 'crypto-random-string';
 import UserModel from '../models/user';
 import RefModel from '../models/refLink';
 
-// Utils
+// Utils that determine response type
 import {errorResp, successResp} from '../util/http_util';
 const router = express.Router();
 
 // Endpoints
 
-// Removes portal user by admin
-//check username if exists change delete is true
+// Remove portal user by admin.
+
+//This function checks if username is valid and in the database or not and change "is_deleted" value to the true.
 const removeUser = (req, res) => {
     const {username} = req.params;
 
@@ -32,9 +33,7 @@ const removeUser = (req, res) => {
 };
 
 
-// list users
-//list users which are not deleted
-//give only 2 colums rest are not required
+// This function query databse for active users.
 const listUsers = (req, res) => {
     UserModel.where({is_deleted: false})
         .fetchAll({
@@ -54,8 +53,8 @@ const listUsers = (req, res) => {
     Create ref link for register as portal user
 */
 
-// creating new referance link for portal to be used 15 character
-//expire date 1 day
+// Creating new referance link for to be used in the registeration as portal user.
+// Link expire date set to 1 day.
 
 const createRefLink = (req, res) => {
 
@@ -74,14 +73,12 @@ const createRefLink = (req, res) => {
         });
 };
 
+// This fucntion change users' priviledge.
+// Set priority the user  
+//    0 =>  Mobile User
+//    10 => Portal User
+//    3 =>  Admin
 
-/* no need right now if 2 admin needs to login or change portal to user to admin user
-    Set priority the user 
-    
-    0 => User
-    10 => Portal User
-    3 => Admin
-*/
 const setPriority = (req, res) => {
     const {priority, userId} = req.body;
     

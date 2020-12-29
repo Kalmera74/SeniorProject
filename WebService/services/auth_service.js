@@ -4,42 +4,26 @@ import moment from 'moment';
 // Models
 import UserModel from '../models/user';
 import PortalVerificationStringModel from '../models/portalVerificationString'
-// Utils
+// Utils that determine response type
 import {errorResp, successResp} from '../util/http_util';
 // Config
 import config from 'config';
 
 const {auth} = config;
 
+//Endpoints
+
+//This function takes nation id and password,
+//assign priority key to a 0, determines it is mobile user
+//and save whole data to a database.
 const mobileRegister = async (req, res) => {
 
-   //const token=req.params.token
     const {nationID, password} = req.body;
 
     if (!nationID || !password) {
         errorResp(res, new Error('nationID and Password are required'));
         return;
     }
-
-   /*const is_TokenValid =await  UserModel.where({
-        token:token,
-    })
-        .fetchAll({
-            columns: ['token'],
-            require: true,
-        })
-        .then(() => {
-            return true;
-        })
-        .catch(err => {
-            if(err){
-                return false;
-
-            }
-        
-        });
-
-        if(is_TokenValid){*/
     UserModel.where({
         nationID,
     })
@@ -67,18 +51,11 @@ const mobileRegister = async (req, res) => {
                     });
             }
         });
-
-    //}
-      /* else{
-            
-            errorResp(res, new Error('Invalid token'));
-            return;
-   }*/
 };
-
+//After the user click the link that admin send portal user can register.
+//This function takes username and password, assign priority key to 10, determine that it is a portal user
 const portalRegister = async (req, res) => {
 
-   // const {token} = req.params
     const {username, password} = req.body;
 
     if(Number.isInteger(parseInt(username))){
@@ -90,25 +67,6 @@ const portalRegister = async (req, res) => {
         errorResp(res, new Error('username and Password are required'));
         return;
     }
-  /*  const is_TokenValid =await  PortalVerificationStringModel.where({
-        token:token,
-    })
-    
-        .fetchAll({
-            columns: ['token'],
-            require: true,
-        })
-        .then(() => {
-            return true;
-        })
-        .catch(err => {
-            if(err){
-                return false;
-
-            }
-        
-        });
-        if(is_TokenValid){*/
             UserModel.where({
                 username,
             })
@@ -137,14 +95,10 @@ const portalRegister = async (req, res) => {
                             });
                     }
                 });
-        /*}
-        else{
-            
-                 errorResp(res, new Error('Invalid token'));
-                 return;
-        }*/
-};
 
+};
+// This function takes nation id and password query database to check whether user is inside the database or not
+// and assign 1 hour expire time token to it. That is placed inside config file.
 const mobileLogin = (req, res) => {
 
     const {password} = req.body;
@@ -155,7 +109,6 @@ const mobileLogin = (req, res) => {
         return;
     }
     
-
     UserModel.where({nationID:nationID, is_deleted:false})
         .fetch()
         .then((user) => {
@@ -188,8 +141,9 @@ const mobileLogin = (req, res) => {
         });
 };
 
-
-// admin and portal user use same login
+//This function allow both admin and portal user login at the same route.
+// This function takes username and password query database to check whether users  is inside the database not
+// and assign 1 hour expire time token to it. That is placed inside config file.
 const systemLogin = (req, res) => {
 
     const {username, password} = req.body;

@@ -1,5 +1,5 @@
 const api = require('express').Router();
-
+//Admin route
 import DeskService from '../services/desk_service';
 import UserService from '../services/user_service';
 import sendEmail from '../services/email_service';

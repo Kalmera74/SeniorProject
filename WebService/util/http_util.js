@@ -1,4 +1,4 @@
-//Middleware Response types whether give an error or not
+//Middleware Response types determine positive or negative response.
 
 const successResp = (res, data, code = 200) => {
     res.status(code).json(data);
@@ -12,5 +12,3 @@ const errorResp = (res, err, code = 400) => {
 };
 
 export {successResp, errorResp};
-
-//enc
