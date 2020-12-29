@@ -121,8 +121,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     // login state
-    this.state = {isLoggedIn: true};
+    this.state = {isLoggedIn: false};
   }
+
+  handleClick() {
+    this.setState(state => ({
+      isLoggedIn: !state.isLoggedIn
+    }));
+  }
+
 
   static contextType = GlobalContext;
 
@@ -219,7 +226,28 @@ class App extends React.Component {
             </Layout>
           </Layout>
         </Router>
-        : <LoginPage></LoginPage>
+        : <form>
+        <div>
+            <Header title="Login"></Header>
+            <div className="base-container">
+                <div className="content">
+                    <div className="form">
+                        <div className="form-group">
+                            <label htmlFor="id">ID</label>
+                            <input type="text" name="id" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input type="password" name="password"/>
+                        </div>
+                    </div>
+                </div>
+                <div className="footer">
+                    <button type="submit" className="btn" onClick={() => this.handleClick()} >Login</button>
+                </div>
+            </div>
+        </div>
+        </form>
         }
       </div>
     );
