@@ -54,7 +54,7 @@ const useQR = (req, res) => {
 };
 
 // Send qr number to the kiosk machine's url.
-async function sendQR(qr) {
+const sendQR = async (qr) => {
 
     const apiURL = "http://168.119.190.83";
     console.log(qr);

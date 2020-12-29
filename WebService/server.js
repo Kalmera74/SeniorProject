@@ -43,7 +43,7 @@ app.use(apiPath +'mobile', authMiddleware, mobileMiddleware, userRoutes);
 app.use(apiPath +'portal', authMiddleware, portalMiddleware, portalRoutes);
 app.use(apiPath, authMiddleware, adminMiddleware, adminRoutes);
 
-
+// Create an https server with the given private key and key chain
 const httpsServer = https.createServer({
   key: fs.readFileSync('/etc/letsencrypt/live/senior.fastntech.com/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/senior.fastntech.com/fullchain.pem'),
@@ -52,7 +52,7 @@ const httpsServer = https.createServer({
 
 const connect = (port) => {
     port = port || 443;
-
+// Start the https server on port and start listening
     httpsServer.listen(port, () => {
         console.info('Running on https://senior.fastntech.com:%s', port);
     });
