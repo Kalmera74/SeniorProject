@@ -11,7 +11,7 @@ import userRoutes from './routes/user';
 import authRoutes from './routes/auth';
 import adminRoutes from './routes/admin';
 import portalRoutes from './routes/portal';
-// Middleware
+// Middlewares
 import authMiddleware from './middleware/auth';
 import adminMiddleware from './middleware/admin';
 import portalMiddleware from './middleware/portal_user';
@@ -21,22 +21,21 @@ const pjson = require('./package.json');
 
 const app = express();
 
-//allow user to access to data to any origin 
+//Allow user to access to data to any origin.
 app.use(cors());
 
-//json data parser
+//Json data parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({type: 'application/json'}));
 
-//terminal log
+//Terminal logs.
 app.use(morgan('combined'));
 
-// const apiPath = '/api/v' + pjson.version;
 const apiPath = '/api/'; 
 
-// API ROUTES
+// API Routes
 
 app.use('/', authRoutes);
 
@@ -44,7 +43,7 @@ app.use(apiPath +'mobile', authMiddleware, mobileMiddleware, userRoutes);
 app.use(apiPath +'portal', authMiddleware, portalMiddleware, portalRoutes);
 app.use(apiPath, authMiddleware, adminMiddleware, adminRoutes);
 
-
+// Create an https server with the given private key and key chain
 const httpsServer = https.createServer({
   key: fs.readFileSync('/etc/letsencrypt/live/senior.fastntech.com/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/senior.fastntech.com/fullchain.pem'),
@@ -53,9 +52,8 @@ const httpsServer = https.createServer({
 
 const connect = (port) => {
     port = port || 443;
-
+// Start the https server on port and start listening
     httpsServer.listen(port, () => {
-        // qr_code_service.generateQR().then(qr_code_service.sendQR);
         console.info('Running on https://senior.fastntech.com:%s', port);
     });
 };

@@ -2,7 +2,7 @@
 import QrCode from '../models/qrCode';
 // Requirements
 import express from 'express';
-// Utils
+// Utils that determine response type
 import { errorResp, successResp } from '../util/http_util';
 
 import request from 'request';
@@ -31,7 +31,7 @@ const generateQR = (req, res) => {
         });
 };
 
-// Use QR change activity
+// Use QR change activity to QR code
 
 const useQR = (req, res) => {
     const { code } = req.params;
@@ -53,7 +53,8 @@ const useQR = (req, res) => {
         });
 };
 
-async function sendQR(qr) {
+// Send qr number to the kiosk machine's url.
+const sendQR = async (qr) => {
 
     const apiURL = "http://168.119.190.83";
     console.log(qr);
@@ -71,9 +72,6 @@ async function sendQR(qr) {
 }
 
 const router = express.Router();
-
-// module.exports.sendQR = sendQR;
-
 router.route('/qr/').post(generateQR);
 router.route('/qr/:code').put(useQR);
 

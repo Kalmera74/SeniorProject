@@ -1,5 +1,5 @@
 const api = require('express').Router();
-
+// Users route
 import QueueService from '../services/queue_service';
 import QRService from '../services/qr_code_service';
 import InfoService from '../services/user_info_service';

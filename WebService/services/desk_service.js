@@ -3,13 +3,14 @@ import express from 'express';
 // Models
 import DeskModel from '../models/desk';
 import AverageTimeModel from '../models/averageTime';
-// Utils
+// Utils that determine response type
 import {errorResp, successResp} from '../util/http_util';
 
 // Endpoints
 
 //Accessible by admin only
 
+//This function take name and create a new desk.
 const createDesk = (req, res) => {
     const {name} = req.body;
 
@@ -29,9 +30,7 @@ const createDesk = (req, res) => {
         });
 };
 
-/*
-  // Delete desk from system
-*/
+// This function takes id and removes the desk from system.
 const removeDesk = (req, res) => {
     const {id} = req.params;
     if (!Number.isInteger(Number(id))) {
@@ -57,9 +56,7 @@ const removeDesk = (req, res) => {
         });
 };
 
-/*
-  List desk without deleted ones
-*/
+// This function lists the active desk.
 const listDesks = (req, res) => {
     DeskModel.where({
         is_deleted: false,
@@ -72,9 +69,8 @@ const listDesks = (req, res) => {
             successResp(res, {data: result});
         });
 };
-/*
-  Activate / Deactivate a desk
-*/
+
+// This function take desk id and status and change activity of the desk active to deactive or vice versa.
 const setActivityToDesk = (req, res) => {
 
     const {status} = req.body;
@@ -100,7 +96,7 @@ const setActivityToDesk = (req, res) => {
         });
 
 };
-// Adjust Average time
+// This function sets the given desks' average time that kiosk machine send.
 const setAverageTime = (req, res) => {
 
     const {time, deskId} = req.body || {};
@@ -129,8 +125,8 @@ const setAverageTime = (req, res) => {
         });
 };
 
-// Get average time
-//this function getch avg time from db and send back response to user
+
+//This function get the averaga time from database and send back response to the user.
 
 const getAverageTime = (req, res) => {
 

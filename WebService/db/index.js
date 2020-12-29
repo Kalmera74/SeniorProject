@@ -1,6 +1,6 @@
 const config = require('config');
 const path = require('path');
-
+// Databse information
 const knexConnector = require('knex')({
     client: 'pg',
     connection: {

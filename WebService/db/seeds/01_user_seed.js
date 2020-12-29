@@ -1,5 +1,5 @@
 import UserModel from '../../models/user';
-
+// İnitial user creation for the system
 exports.seed = (knex) =>
     knex(new UserModel().tableName)
         .del()

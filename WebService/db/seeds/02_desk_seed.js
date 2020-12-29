@@ -1,5 +1,5 @@
 import Model from '../../models/desk';
-
+// Dummy desk number for test purpose.
 exports.seed = (knex) =>
     knex(new Model().tableName)
         .del()

@@ -2,15 +2,13 @@ import express from 'express';
 // Models
 import UserModel from '../models/user';
 import DeskUserModel from '../models/deskUser';
-// Utils
+// Utils that determine response type
 import {errorResp, successResp} from '../util/http_util';
 
 // Endpoints
 
-/*
-    Get the data operations of authenticated user mobile 17
-*/
-//ids matched user's every data
+//  Get the data operations of authenticated user.
+// This function checks id is match or not and return the data that user have.
 const getUserStatistics = (req, res) => {
     const {uid} = req.userData;
 

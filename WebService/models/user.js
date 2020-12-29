@@ -3,18 +3,16 @@ import db from '../db';
 
 const SALT_ROUNDS = 7;
 
-// Hash the string and check the value whether it matches or not
+// Hash the string and check the value whether it matches or not.
 
 const hashPassword = (password) => bcrypt.hash(password, SALT_ROUNDS);
 const verifyPassword = (password, hash) => bcrypt.compare(password, hash);
-
-
 
 const checkAndHash = (user) => {
     if (!user.password) return Promise.resolve(user);
 
 
-    // Hash the message
+    // Hash the message.
     return hashPassword(user.password)
         .then((hash) => {
             user.password = hash;
@@ -24,6 +22,8 @@ const checkAndHash = (user) => {
 
 const bookshelf = require('bookshelf')(db);
 
+
+//Models that address tables in data base used by due to ORM.
 const User = bookshelf.model(
     'User',
     {

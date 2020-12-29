@@ -4,7 +4,7 @@ import {errorResp} from '../util/http_util';
 
 
 // Function that checks the authorization number of user 
-// before give priviledges
+// before give priviledges.
 
 
 const authorize = (req, res, next) => {

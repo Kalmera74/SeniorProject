@@ -4,7 +4,7 @@ import db from '../db';
 import DeskModel from '../models/desk';
 import DeskUserModel from '../models/deskUser';
 import AverageTimeModel from '../models/averageTime';
-// Utils
+// Utils that determine response type
 import {errorResp, successResp} from '../util/http_util';
 const router = express.Router();
 
@@ -14,7 +14,8 @@ const router = express.Router();
  * Get latest average time of desk, default 1
  * @param {Integer} deskId
  */
-//This function will be called by another function and return avgTime of a desk
+
+//This function is called by getCurrentInfo function and calculates the average time of the desks to be used in bar chart.
 const getAverageTimeOfDesk = (deskId) => {
     return AverageTimeModel.where({
         desk_id: deskId,
@@ -28,11 +29,12 @@ const getAverageTimeOfDesk = (deskId) => {
 };
 
 /**
- * Get front active and not finished user count uc3
+ * 
  * @param {Integer} queueNumber
  */
-//query db for the people is in front
- 
+
+ // This function is called by getCurrentInfo function and calculates the how many people is infront of the given queueNumber
+ // for to be used in bar chart.
 const getFrontCount = (queueNumber) => {
     
     return DeskUserModel.where('id', '<', queueNumber)
@@ -47,8 +49,7 @@ const getFrontCount = (queueNumber) => {
 
 // Endpoints
 
-//add user to the queue
-//
+//This function add users to the queue.
 const joinToQueue = async (req, res) => {
     
     const {uid} = req.userData;
@@ -92,24 +93,34 @@ const joinToQueue = async (req, res) => {
                         
                         return false;
                     })
-                    //no user in queue
+
+                    //No user in queue.
+
                    if(!deskUserData){
                     deskIdWithMinNumUser=1;
                    }else{
-                       //how many desk are there
+
+                    //How many desk are there.
+
                     const deskCount = result.length;
-                    //store all desk ids
+
+                    //Store all desk ids.
+
                     let deskIdArray = [];
-                    //store number of people in each desk
+
+                    //Store number of people in each desk.
+
                     let DeskUserCountArray = [];
                     for(let i=0; i<deskCount; i++){
-                        //initialize all desk with 0 people ın queue
+
+                        //Initialize all desk with 0 people in queue.
+
                         deskIdArray[i] = i+1; 
                         DeskUserCountArray[i]=0;
-                    }   // users that are currently in que
+
+                    }   // Users that are currently in que.
                         deskUserData.models.forEach(model =>{      
                             const deskId = model.attributes.desk_id;
-                            //
                             if( DeskUserCountArray[deskId-1] >=0){
                                 DeskUserCountArray[deskId-1]+=1;
                                }else{
@@ -140,9 +151,8 @@ const joinToQueue = async (req, res) => {
         }
    
 };
-
-// User give up their place in the que
-//in the desk table find active desk find active user change its value to false
+// This function is for giving up the queue by users' will.
+// Giving desk id and user id, where in active desk and active user in queue, change user status to false
 const giveUpQueue = (req, res) => {
     const {deskId} = req.body;
     const {uid} = req.userData;
@@ -179,10 +189,8 @@ const giveUpQueue = (req, res) => {
         });
 };
 
-/*
-  Returns length of current queue 6 how many queue people
-*/
-//in active desk count id 
+//This function get desk id and count the users that are not finished their task
+//and returns length of current queue.
 const getOccupancy = (req, res) => {
     const {deskId} = req.params;
 
@@ -208,10 +216,7 @@ const getOccupancy = (req, res) => {
         });
 };
 
-/*
-  Returns queue lenght of all desks 16
-*/
-//
+// This function query database for active desk id and returns the queue lenght and occupancy times
 const getOccupancyAllDesk = (req, res) => {
 
     DeskUserModel
@@ -242,10 +247,8 @@ const getOccupancyAllDesk = (req, res) => {
         });
 };
 
-/*
-  Returns front length and average time of current user mobile to be run uc 4
-*/
-//mb user in the que fetch all data get how many people is in front than get average time of the desk
+//This function takes queue number and user id for active queue return how many people is in front than get average time of the desk
+
 const getCurrentInfo = (req, res) => {
     const {queueNumber} = req.params; 
     const {uid} = req.userData;
