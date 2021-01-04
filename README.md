@@ -24,3 +24,13 @@ This subsystem is what the end-users will use to interact with the system. With 
 ## [WebPortal Subsystem](https://github.com/Kalmera74/SeniorProject/tree/master/WebPortal)
 
 This subsystem is for the use of the organization's administration. It provides various statistics about the organization and its customers so that the management could utilize the data in their favor. There are two types of users. One is the admin user that comes with the system. This user can invite new users and manage the Kiosk subsystem through the portal (eg. deactivating a desk). Another kind of user is the standard user. This user can only view statistics of the system and generate reports
+
+## Demo
+
+### [Product Video](https://drive.google.com/file/d/1Mv59_vSGfxJvBtjBOBG6XCEYtBJPp4Np/view?usp=sharing)
+
+## User Manuels
+
+### [Mobile Manuel](https://github.com/Kalmera74/SeniorProject/blob/master/Mobile/qrcode_scanner-master/UserManual/UserManual.pdf)
+
+### [WebPortal Manuel](https://github.com/Kalmera74/SeniorProject/blob/master/WebPortal/WebPortal_ManualGuide.pdf)
