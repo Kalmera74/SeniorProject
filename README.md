@@ -34,3 +34,6 @@ This subsystem is for the use of the organization's administration. It provides 
 ### [Mobile Manuel](https://github.com/Kalmera74/SeniorProject/blob/master/Mobile/qrcode_scanner-master/UserManual/UserManual.pdf)
 
 ### [WebPortal Manuel](https://github.com/Kalmera74/SeniorProject/blob/master/WebPortal/WebPortal_ManualGuide.pdf)
+
+# Poster
+![smart qmatci poster](https://github.com/Kalmera74/SeniorProject/blob/master/Poster.jpg)
