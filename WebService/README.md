@@ -37,11 +37,6 @@ Environments:
 npm run start
 ```
 
-### Test 
-
-```bash
-mpm run test
-```
 ### Migrate
 
 Create all tables
