@@ -53,8 +53,11 @@ Create all tables with seed data
 npm run migrate:seed
 ```
 
-> Seed data includes one admin user (Username : admin, Password : admin)
-
+> Seed data includes;
+>one admin user (Username : admin, Password : admin)
+>one portal user(Username : portaluser , Password : 5555 )
+>one mobile user(nationID : 12312, password: '123456')
+ 
 ### Test
 
 Test All System
@@ -67,7 +70,7 @@ You should see these after testing:
 
 ```bash
 Test Suites: 10 passed, 10 total
-Tests:       81 passed, 81 total
+Tests:       76 passed, 76 total
 ```
 
 ## Start API Server
