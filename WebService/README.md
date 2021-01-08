@@ -87,5 +87,18 @@ By special configurations
 node app.js --port 5050
 ```
 
+## Note: 
+
+To get an authentication use below path
+
+```bash
+/auth/ ( use any root inside auth_service file )
+```
+To send request one of the endpoints use below path 
+
+```bash
+/api/ (mobile/portal/(or nothing that represents this is a admin user))
+```
+
 Coding standarts
 (https://github.com/airbnb/javascript=
