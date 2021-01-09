@@ -53,8 +53,8 @@ const getFrontCount = (queueNumber) => {
 const joinToQueue = async (req, res) => {
     
     const {uid} = req.userData;
-    //in active desk fetch evey data is queue have people inside fetch id, desk id related data
-    //if no user is in queue place first user to the first desk
+    //In active desk fetch evey data is queue have people inside fetch id, desk id related data,
+    //if no user is in queue place first user to the first desk.
     let deskIdWithMinNumUser;
     const is_userInQueue = await DeskUserModel.where(
         {
