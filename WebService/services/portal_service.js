@@ -121,7 +121,6 @@ const getPortalStatistics = async (req, res) => {
         }
     ).catch(e=> console.error(e))
 
-    *
     //Get count of given up users.
     
 
