@@ -60,6 +60,12 @@ npm run migrate:seed
  
 ### Test
 
+Install jest module
+
+```bash
+npm i g jest
+```
+
 Test All System
 
 ```bash
@@ -69,8 +75,8 @@ npm run test
 You should see these after testing:
 
 ```bash
-Test Suites: 10 passed, 10 total
-Tests:       76 passed, 76 total
+Test Suites: 11 passed, 11 total
+Tests:       78 passed, 78 total
 ```
 
 ## Start API Server
