@@ -37,3 +37,51 @@ This subsystem is for the use of the organization's administration. It provides 
 
 # Poster
 ![smart qmatci poster](https://github.com/Kalmera74/SeniorProject/blob/master/Poster.jpg)
+
+# Installation Guide
+
+ ## Ubuntu
+
+  ### WebService
+
+```sh
+sudo apt-get update; sudo apt-get upgrade 
+```
+```sh
+sudo apt-get install node
+```
+```sh
+sudo apt-get install postgresql postgresql-contrib
+```
+```sh
+cd SeniorProject/WebService
+```
+```sh
+vim db/index.js
+```
+Change user, password, database fields accordingly
+```sh
+vim config/default.json
+```
+Change the Kiosk api address accordingly
+```sh
+npm i
+```
+```sh
+npm run start
+```
+  ### Kiosk
+```sh
+pip install requests, flask, pyqrcode, json
+```
+```sh
+cd SeniorProject/Kiosk
+```
+```sh
+vim main.py
+```
+Change the API address accordingly
+```sh
+python3 main.py
+```
+
