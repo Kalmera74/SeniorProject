@@ -84,4 +84,6 @@ Change the API address accordingly
 ```sh
 python3 main.py
 ```
+# Troubleshooting
 
+* If there is a problem with the WebService try deleting the files under the node_modules directory and running ```sh npm i ``` again.
