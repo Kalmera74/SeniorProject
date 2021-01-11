@@ -49,10 +49,6 @@ const listUsers = (req, res) => {
         });
 };
 
-/*
-    Create ref link for register as portal user
-*/
-
 // Creating new referance link for to be used in the registeration as portal user.
 // Link expire date set to 1 day.
 

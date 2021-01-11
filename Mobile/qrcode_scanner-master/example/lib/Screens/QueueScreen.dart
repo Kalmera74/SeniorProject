@@ -5,50 +5,98 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Getting data from URL(Localhost for testing)
 final String getQueStat =
     'https://senior.fastntech.com:443/api/mobile/queue/info/';
 
+final String giveUpUrl = 'https://senior.fastntech.com:443/api/mobile/queue/';
+
 //Local variables for testing
-String qNum = ''; // bunu taşıman lazım
+String qNum = '';
 String l = '', k = '';
 int _timerStart;
 
 //UserStat class
 class UserStat {
-  const UserStat({this.quenum, this.linenum, this.timeuntil});
+  String quenum;
+  String linenum;
+  int timeuntil;
 
-  final String quenum;
-  final String linenum;
-  final int timeuntil;
+  UserStat({this.quenum, this.linenum, this.timeuntil});
 }
 
+UserStat userStat = UserStat();
 // final List<UserStat> _userstat = <UserStat>[
 //   UserStat(quenum: Get.arguments, linenum: '10', timeuntil: 11)
 // ];
 
+// Future<Album> fetchAlbum() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   final response = await http.get(getQueStat + qNum, headers: <String, String>{
+//     'authentication': prefs.getString('token'),
+//   });
+
+//   // Appropriate action depending upon the
+//   // server response
+//   if (response.statusCode == 200 || response.statusCode == 400) {
+//     return Album.fromJson(json.decode(response.body));
+//   } else {
+//     throw Exception('Failed to load album');
+//   }
+// }
+
+// class Album {
+//   final int avgTime;
+//   final int frontCount;
+//   final int waitingTime;
+
+//   Album({this.avgTime, this.frontCount, this.waitingTime});
+
+//   factory Album.fromJson(Map<String, dynamic> json) {
+//     return Album(
+//       avgTime: json['avgTime'],
+//       frontCount: json['frontCount'],
+//       waitingTime: json['waitingTime'],
+//     );
+//   }
+// }
+
 //Getting Queue Statictics Data
-Future getQueStatFunc(String qNum) async {
+Future getQueStatFunc() async {
   final prefs = await SharedPreferences.getInstance();
   final res = await http.get(getQueStat + qNum, headers: <String, String>{
     'authentication': prefs.getString('token'),
   });
-  if (res.statusCode == 200) {
+  if (res.statusCode == 200 || res.statusCode == 400) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
 
     Map<String, dynamic> user = jsonDecode(res.body);
+
     l = user['avgTime'].toString();
     k = user['frontCount'].toString();
     _timerStart = user['waitingTime'];
+    // userStat.quenum = l;
+    // userStat.linenum = k;
+    // userStat.timeuntil = _timerStart;
+
     // t = user['timeuntil'].toString();
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception('Failed to load TicketStatistics!');
+  }
+}
+
+Future giveUpQueue() async {
+  final prefs = await SharedPreferences.getInstance();
+  final res = await http.delete(giveUpUrl, headers: <String, String>{
+    'authentication': prefs.getString('token'),
+  });
+  if (res.statusCode == 200 || res.statusCode == 400) {
+    await Get.offNamed('/second');
   }
 }
 
@@ -65,7 +113,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
   // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   //Timer variables
   Timer _timer;
-  int _start = _timerStart;
+  int _start = userStat.timeuntil;
 
   void startTimer() {
     if (_timer != null) {
@@ -97,6 +145,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getQueStatFunc();
     startTimer();
   }
 
@@ -108,10 +157,14 @@ class _CountdownTimerState extends State<CountdownTimer> {
   }
 }
 
-class SubPage extends StatelessWidget {
+class SubPage extends StatefulWidget {
+  @override
+  _SubPageState createState() => _SubPageState();
+}
+
+class _SubPageState extends State<SubPage> {
   @override
   Widget build(BuildContext context) {
-    getQueStatFunc(qNum);
     return Scaffold(
       appBar: AppBar(
         title: Text('Queue Page'),
@@ -124,7 +177,7 @@ class SubPage extends StatelessWidget {
             Text(l),
             Text('Your Number '),
             Text('the number of people in front of you'),
-            Text(k),
+            Text('${k}'),
             CountdownTimer(),
             // Text('Approximate Time Length in milliseconds '),
             // Text(t.toString()),
@@ -146,9 +199,11 @@ class SubPage extends StatelessWidget {
                   },
                 ),
                 FlatButton(
-                  child: Text('Yes'),
-                  onPressed: null,
-                )
+                    child: Text('Yes'),
+                    onPressed: () {
+                      giveUpQueue();
+                      // Get.offNamed('/second');
+                    })
               ],
             ),
           );
@@ -159,16 +214,3 @@ class SubPage extends StatelessWidget {
     );
   }
 }
-
-class QueuePage extends StatelessWidget {
-  const QueuePage({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SubPage(),
-    );
-  }
-}
-
-void main() => runApp(QueuePage());

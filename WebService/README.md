@@ -22,7 +22,7 @@ npm install
 
 ### Write Kiosk API's url to each json file inside the config folder
 
-### Change related connection areas used while creating postgresql, index js and config file
+### Change related connection areas used while creating postgresql index js and config file
 
 ### Set Environment
 
@@ -53,10 +53,31 @@ Create all tables with seed data
 npm run migrate:seed
 ```
 
-> Seed data includes 
->one admin user(Username : admin, Password : admin),
->one portal user(username: 'portaluser',password: '5555'),
->one mobile user (nationID: 12312,password: '123456') 
+> Seed data includes;
+>one admin user (Username : admin, Password : admin)
+>one portal user(Username : portaluser , Password : 5555 )
+>one mobile user(nationID : 12312, password: '123456')
+ 
+### Test
+
+Install jest module
+
+```bash
+npm i g jest
+```
+
+Test All System
+
+```bash
+npm run test
+```
+
+You should see these after testing:
+
+```bash
+Test Suites: 11 passed, 11 total
+Tests:       78 passed, 78 total
+```
 
 ## Start API Server
 
@@ -72,5 +93,18 @@ By special configurations
 node app.js --port 5050
 ```
 
-## Used coding standarts for Web Service
-   (https://github.com/airbnb/javascript)
+## Note: 
+
+To get an authentication use below path
+
+```bash
+/auth/ ( use any root inside auth_service file )
+```
+To send request one of the endpoints use below path 
+
+```bash
+/api/ (mobile/portal/(or nothing that represents this is a admin user))
+```
+
+Coding standarts
+(https://github.com/airbnb/javascript=

@@ -29,7 +29,6 @@ final String enterQueueURL =
 //Get Occupancy Data
 Future getOccuData() async {
   final prefs = await SharedPreferences.getInstance();
-  print(prefs.getString('token'));
   final res = await http.get(geturl, headers: <String, String>{
     'authentication': prefs.getString('token'),
   });
@@ -44,7 +43,6 @@ Future getOccuData() async {
         avgUser: value,
       ));
     });
-
     return listA;
   } else {
     // If the server did not return a 200 OK response,
@@ -53,11 +51,40 @@ Future getOccuData() async {
   }
 }
 
+// Future<Album> fetchAlbum() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   final response = await http.get(geturl, headers: <String, String>{
+//     'authentication': prefs.getString('token'),
+//   });
+//   // Appropriate action depending upon the
+//   // server response
+//   if (response.statusCode == 200 || response.statusCode == 400) {
+//     return Album.fromJson(json.decode(response.body));
+//   } else {
+//     throw Exception('Failed to load album');
+//   }
+// }
+
+// class Album {
+//   final int userId;
+//   final int id;
+//   final String title;
+
+//   Album({this.userId, this.id, this.title});
+
+//   factory Album.fromJson(Map<String, dynamic> json) {
+//     return Album(
+//       userId: json['userId'],
+//       id: json['id'],
+//       title: json['title'],
+//     );
+//   }
+// }
+
 //Enter queue
 Future getQue(String str) async {
   final prefs = await SharedPreferences.getInstance();
-  // tokenData.update('authentication', (value) => prefs.getString('token'));
-  final res = await http.post(getQRCheck + '/' + str, headers: <String, String>{
+  final res = await http.put(getQRCheck + '/' + str, headers: <String, String>{
     'authentication': prefs.getString('token'),
   });
   if (res.statusCode == 200 || res.statusCode == 401) {
@@ -70,9 +97,8 @@ Future getQue(String str) async {
     if (response.statusCode == 200 || response.statusCode == 400) {
       Map<String, dynamic> user = jsonDecode(response.body.toString());
       print(user['id']);
-      print(user['user_id']);
-      qNum = user['id'];
-      await Get.toNamed('/third');
+      qNum = user['id'].toString();
+      await Get.toNamed('/third', arguments: qNum);
     }
   } else {
     // If the server did not return a 200 OK response,
@@ -188,4 +214,15 @@ class _MyAppState extends State<MyApp> {
       //call /queue/{code}
     }
   }
+}
+
+void main() {
+  runApp(GetMaterialApp(
+    initialRoute: '/',
+    getPages: [
+      GetPage(name: '/', page: () => LoginPage()),
+      GetPage(name: '/second', page: () => MyApp()),
+      GetPage(name: '/third', page: () => SubPage()),
+    ],
+  ));
 }

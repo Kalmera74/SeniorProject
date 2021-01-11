@@ -225,14 +225,3 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return false;
   }
 }
-
-void main() {
-  runApp(GetMaterialApp(
-    initialRoute: '/',
-    getPages: [
-      GetPage(name: '/', page: () => LoginPage()),
-      GetPage(name: '/second', page: () => MyApp()),
-      GetPage(name: '/third', page: () => SubPage()),
-    ],
-  ));
-}

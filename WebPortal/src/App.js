@@ -121,7 +121,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     // login state
-    this.state = {isLoggedIn: false};
+    this.state = {isLoggedIn: true};
   }
 
   handleClick() {
