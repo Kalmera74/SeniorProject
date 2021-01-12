@@ -20,7 +20,7 @@ For checking:
 npm install
 ```
 
-### Write Kiosk API's url to each json file inside the config folder
+### Write Kiosk API's url to each json file inside the config folder and senqr function inside qr service
 
 ### Change related connection areas used while creating postgresql index js and config file
 
