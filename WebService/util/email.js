@@ -1,7 +1,8 @@
 //Email implementation for to be used to send email by admin to create new portal user
 
 const nodemailer = require('nodemailer');
-
+//Prevent TLS errors
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 const Email = function({ email, message }, subject, url) {
     this.to = email;
     this.message = message;
